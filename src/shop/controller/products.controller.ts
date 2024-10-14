@@ -10,7 +10,8 @@ export class ProductsController {
 
   @Get()
   @ApiOperation({ summary: 'Fetch all prodcuts.' })
-  @ApiResponse({ status: HttpStatus.OK, type: () => ProductDto })
+  @ApiResponse({ status: HttpStatus.OK, type: () => ProductDto, isArray: true })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
   async getProducts(): Promise<ProductDto[]> {
     return await this._productsService.getAll();
   }
