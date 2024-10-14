@@ -1,20 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { ProductInterface } from '../interfaces';
 import { PRODUCTS_DATA } from '../data/products';
+import { ProductInterface } from '../interfaces';
+import { ProductDto } from '../dto';
 
 @Injectable()
 export class ProductsService {
   private readonly _PRODUCTS: ProductInterface[] = PRODUCTS_DATA;
 
-  async getAll(): Promise<ProductInterface[]> {
-    return this._PRODUCTS;
+  async getAll(): Promise<ProductDto[]> {
+    return this._PRODUCTS.map((product) => new ProductDto(product));
   }
 
-  async find(id: number): Promise<ProductInterface> {
-    return this._PRODUCTS.find((product) => product.id === id);
+  async find(id: number): Promise<ProductDto> {
+    const PRODUCT = this._PRODUCTS.find((product) => product.id === id);
+    return new ProductDto(PRODUCT);
   }
 
-  async create(data: ProductInterface): Promise<void> {
+  async create(data: ProductDto): Promise<void> {
     this._PRODUCTS.push(data);
   }
 
