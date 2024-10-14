@@ -1,14 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
+import { ProductsService } from '../services/products.service';
 
 @Controller('products')
 export class ProductsController {
+  constructor(private _productsService: ProductsService) {}
+
   @Get()
   async getProducts(): Promise<any[]> {
-    return [
-      { id: 1, description: 'Product 1' },
-      { id: 2, description: 'Product 2' },
-      { id: 3, description: 'Product 3' },
-      { id: 4, description: 'Product 4' },
-    ];
+    return await this._productsService.getAll();
   }
 }
