@@ -1,4 +1,3 @@
-import { join } from 'path';
 import { DataSource } from 'typeorm';
 
 export const connectionSource = new DataSource({
@@ -8,7 +7,7 @@ export const connectionSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [join(__dirname, '**', '*.entity.ts')],
-  migrations: [join(__dirname, 'migrations/**', '*.ts')],
+  entities: [`${__dirname}/../**/**.entity{.ts,.js}`],
+  migrations: [`${__dirname}/../migrations/**.ts`],
   synchronize: false,
 });
