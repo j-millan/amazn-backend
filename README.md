@@ -52,7 +52,7 @@ Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
 	```bash
 	$ npm install
 	```
-4. Duplicate the `.env` file as `.env.local` and replace variable values with the values we used to create our database.
+4. Duplicate the `.env.template` file as `.env.local` and replace variable values with the values we used to create our database.
 
 5. Run migrations:
 	```bash
