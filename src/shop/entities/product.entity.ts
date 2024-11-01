@@ -46,12 +46,13 @@ export class Product {
   })
   price: number;
 
-  // @ApiProperty({
-  //   name: 'category',
-  //   type: Number,
-  //   description: 'The product generic category',
-  // })
-  // category: string;
+  @Column('varchar')
+  @ApiProperty({
+    name: 'category',
+    type: Number,
+    description: 'The product generic category',
+  })
+  category: string;
 
   // @ApiProperty({
   //   name: 'images',
