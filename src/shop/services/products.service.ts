@@ -3,6 +3,7 @@ import { CreateProductDto } from '../dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from '../entities';
 import { Repository } from 'typeorm';
+import slugify from 'slugify';
 
 @Injectable()
 export class ProductsService {
@@ -23,13 +24,21 @@ export class ProductsService {
   }
 
   async create(data: CreateProductDto): Promise<Product> {
-    const PRODUCT = await this._productsRepository.create(data);
+    const PRODUCT = await this._productsRepository.save(
+      await this._productsRepository.create(data),
+    );
 
-    await this._productsRepository.save(PRODUCT);
+    this._generateSlug(PRODUCT);
     return PRODUCT;
   }
 
   async delete(id: number): Promise<void> {
     await this._productsRepository.delete(id);
+  }
+
+  private _generateSlug(product: Product): void {
+    product.slug =
+      slugify(product.name, { lower: true }) + '-' + product.id.toString();
+    this._productsRepository.update(product.id, product);
   }
 }

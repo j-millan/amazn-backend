@@ -1,8 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import slugify from 'slugify';
 import {
-  AfterInsert,
-  AfterUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -87,10 +84,4 @@ export class Product {
     description: 'The date at which the product was last updated',
   })
   updatedAt: string;
-
-  @AfterInsert()
-  @AfterUpdate()
-  generateSlug() {
-    this.slug = slugify(this.name, { lower: true }) + '-' + this.id.toString();
-  }
 }
