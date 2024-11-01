@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import slugify from 'slugify';
 import {
-  BeforeInsert,
-  BeforeUpdate,
+  AfterInsert,
+  AfterUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -16,7 +16,7 @@ export class Product {
   @ApiProperty({ name: 'id', type: Number, description: "The product's id" })
   id: number;
 
-  @Column('varchar')
+  @Column('varchar', { nullable: true })
   @ApiProperty({
     name: 'slug',
     type: String,
@@ -88,8 +88,8 @@ export class Product {
   })
   updatedAt: string;
 
-  @BeforeInsert()
-  @BeforeUpdate()
+  @AfterInsert()
+  @AfterUpdate()
   generateSlug() {
     this.slug = slugify(this.name, { lower: true }) + '-' + this.id.toString();
   }
