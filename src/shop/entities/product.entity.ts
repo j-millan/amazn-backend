@@ -4,8 +4,10 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Column,
+  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -70,7 +72,7 @@ export class Product {
   // })
   // reviews: [];
 
-  @Column('date')
+  @CreateDateColumn()
   @ApiProperty({
     name: 'createdAt',
     type: String,
@@ -78,7 +80,7 @@ export class Product {
   })
   createdAt: string;
 
-  @Column('date')
+  @UpdateDateColumn()
   @ApiProperty({
     name: 'updatedAt',
     type: String,
