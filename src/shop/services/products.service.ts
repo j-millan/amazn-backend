@@ -28,7 +28,7 @@ export class ProductsService {
       await this._productsRepository.create(data),
     );
 
-    this._generateSlug(PRODUCT);
+    this._setSlug(PRODUCT);
     return PRODUCT;
   }
 
@@ -36,7 +36,7 @@ export class ProductsService {
     await this._productsRepository.delete(id);
   }
 
-  private _generateSlug(product: Product): void {
+  private _setSlug(product: Product): void {
     product.slug =
       slugify(product.name, { lower: true }) + '-' + product.id.toString();
     this._productsRepository.update(product.id, product);
