@@ -10,7 +10,7 @@ import {
 @Entity()
 export class Product {
   @PrimaryGeneratedColumn('uuid')
-  @ApiProperty({ name: 'id', type: Number, description: "The product's id" })
+  @ApiProperty({ name: 'id', type: Number, description: 'The product id' })
   id: number;
 
   @Column('varchar', { nullable: true })
@@ -25,7 +25,7 @@ export class Product {
   @ApiProperty({
     name: 'name',
     type: String,
-    description: "The product's name",
+    description: 'The product name',
   })
   name: string;
 
@@ -33,7 +33,7 @@ export class Product {
   @ApiProperty({
     name: 'description',
     type: String,
-    description: "The product's description",
+    description: 'The product description',
   })
   description: string;
 
@@ -41,7 +41,7 @@ export class Product {
   @ApiProperty({
     name: 'price',
     type: Number,
-    description: "The product's price, in U$D",
+    description: 'The product price, in U$D',
   })
   price: number;
 
