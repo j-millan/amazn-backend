@@ -7,10 +7,6 @@ export class User {
   @ApiProperty({ name: 'id', description: 'The user id', type: String })
   id: string;
 
-  @Column('varchar', { unique: true, length: 254 })
-  @ApiProperty({ name: 'email', description: 'The user email.', type: String })
-  email: string;
-
   @Column('varchar', { length: 255 })
   @ApiProperty({
     name: 'password',
@@ -18,14 +14,6 @@ export class User {
     type: String,
   })
   password: string;
-
-  @Column('varchar', { length: 30, nullable: true })
-  @ApiProperty({
-    name: 'username',
-    description: 'The user username',
-    type: String,
-  })
-  username?: string;
 
   @Column('varchar', { length: 30 })
   @ApiProperty({
@@ -43,11 +31,30 @@ export class User {
   })
   lastName: string;
 
-  @Column('varchar', { length: 15 })
+  @Column('varchar', { length: 254, unique: true, nullable: true })
+  @ApiProperty({
+    name: 'email',
+    description: 'The user email.',
+    type: String,
+    required: false,
+  })
+  email?: string;
+
+  @Column('varchar', { length: 15, unique: true, nullable: true })
   @ApiProperty({
     name: 'phoneNumber',
     description: 'The user phone number',
     type: String,
+    required: false,
   })
-  phoneNumber: string;
+  phoneNumber?: string;
+
+  @Column('varchar', { length: 30, nullable: true })
+  @ApiProperty({
+    name: 'username',
+    description: 'The user username',
+    type: String,
+    required: false,
+  })
+  username?: string;
 }
