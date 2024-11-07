@@ -8,15 +8,15 @@ import slugify from 'slugify';
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectRepository(Product) private _productsRepository: Repository<Product>,
+    @InjectRepository(Product) private _productsRepo: Repository<Product>,
   ) {}
 
   async getAll(): Promise<Product[]> {
-    return await this._productsRepository.find();
+    return await this._productsRepo.find();
   }
 
   async find(id: number): Promise<Product> {
-    const PRODUCT = await this._productsRepository.findOneOrFail({
+    const PRODUCT = await this._productsRepo.findOneOrFail({
       where: { id },
     });
 
@@ -24,8 +24,8 @@ export class ProductsService {
   }
 
   async create(data: CreateProductDto): Promise<Product> {
-    const PRODUCT = await this._productsRepository.save(
-      await this._productsRepository.create(data),
+    const PRODUCT = await this._productsRepo.save(
+      await this._productsRepo.create(data),
     );
 
     this._setSlug(PRODUCT);
@@ -33,12 +33,12 @@ export class ProductsService {
   }
 
   async delete(id: number): Promise<void> {
-    await this._productsRepository.delete(id);
+    await this._productsRepo.delete(id);
   }
 
   private _setSlug(product: Product): void {
     product.slug =
       slugify(product.name, { lower: true }) + '-' + product.id.toString();
-    this._productsRepository.update(product.id, product);
+    this._productsRepo.update(product.id, product);
   }
 }
