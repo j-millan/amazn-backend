@@ -1,26 +1,19 @@
-import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserServiceInterface } from './users.service.interface';
+import { UsersServiceInterface } from './users.service.interface';
+import { SignupDto } from '../auth/dto';
 import { User } from './entities';
-import { CreateUserDto } from './dto';
 
 @Injectable()
-export class UsersService implements UserServiceInterface {
+export class UsersService implements UsersServiceInterface {
   constructor(@InjectRepository(User) private _usersRepo: Repository<User>) {}
 
   async find(id: string): Promise<User> {
     return await this._usersRepo.findOne({ where: { id } });
   }
 
-  async create(data: CreateUserDto): Promise<User> {
-    if (!data.email && !data.phoneNumber) {
-      throw new HttpException(
-        'Email or phone number is required',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
+  async create(data: SignupDto): Promise<User> {
     const NEW_USER = await this._usersRepo.save(
       await this._usersRepo.create(data),
     );

@@ -7,7 +7,7 @@ import {
   Length,
 } from 'class-validator';
 
-export class CreateUserDto {
+export class SignupDto {
   @IsString()
   @Length(16, 32)
   @IsStrongPassword()

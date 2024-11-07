@@ -1,7 +1,7 @@
 import { User } from 'src/users/entities';
-import { CreateUserDto } from './dto';
+import { SignupDto } from '../auth/dto';
 
-export interface UserServiceInterface {
+export interface UsersServiceInterface {
   find(id: string): Promise<User>;
-  create(data: CreateUserDto): Promise<User>;
+  create(data: SignupDto): Promise<User>;
 }

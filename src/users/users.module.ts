@@ -12,5 +12,11 @@ import { User } from './entities';
       useClass: UsersService,
     },
   ],
+  exports: [
+    {
+      provide: InjectionEnum.USERS_SERVICE,
+      useClass: UsersService,
+    },
+  ],
 })
 export class UsersModule {}
