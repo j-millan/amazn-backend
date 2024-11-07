@@ -19,13 +19,13 @@ export class User {
   })
   password: string;
 
-  @Column('varchar', { length: 35 })
+  @Column('varchar', { length: 30, nullable: true })
   @ApiProperty({
     name: 'username',
     description: 'The user username',
     type: String,
   })
-  username: string;
+  username?: string;
 
   @Column('varchar', { length: 30 })
   @ApiProperty({
