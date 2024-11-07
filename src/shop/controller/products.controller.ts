@@ -5,7 +5,9 @@ import {
   HttpStatus,
   Inject,
   Post,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProductsService } from '../services/products.service';
 import { Product } from '../entities';
@@ -29,8 +31,14 @@ export class ProductsController {
     isArray: true,
   })
   @ApiResponse({ status: HttpStatus.NO_CONTENT })
-  async getProducts(): Promise<Product[]> {
-    return await this._productsService.getAll();
+  async getProducts(@Res() response: Response): Promise<Product[] | Response> {
+    const RESULT = await this._productsService.getAll();
+
+    if (!RESULT.length) {
+      return response.status(HttpStatus.NO_CONTENT).send();
+    }
+
+    return RESULT;
   }
 
   @Post()
