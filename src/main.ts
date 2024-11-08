@@ -1,12 +1,15 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 
 async function bootstrap() {
   const APP = await NestFactory.create(AppModule);
-  APP.setGlobalPrefix('api');
-  APP.useGlobalPipes(new ValidationPipe({ transform: true }));
+  registerGlobals(APP);
 
   const SWAGGER_CONFIG = new DocumentBuilder()
     .setTitle('Amazn API')
@@ -18,4 +21,11 @@ async function bootstrap() {
 
   await APP.listen(3000);
 }
+
+async function registerGlobals(app: INestApplication): Promise<void> {
+  app.setGlobalPrefix('api');
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+}
+
 bootstrap();
