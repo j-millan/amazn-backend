@@ -20,6 +20,18 @@ export class AuthService implements AuthServiceInterface {
       );
     }
 
+    const EMAIL_USER = this._usersService.find({ email: data.email });
+    const PHONE_USER = this._usersService.find({
+      phoneNumber: data.phoneNumber,
+    });
+
+    if (EMAIL_USER || PHONE_USER) {
+      throw new HttpException(
+        'The email/phone number provided is already in use',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     return this._usersService.create(data);
   }
 

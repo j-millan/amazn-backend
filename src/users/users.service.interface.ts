@@ -1,7 +1,8 @@
 import { User } from 'src/users/entities';
 import { SignUpDto } from '../auth/dto';
+import { UserFiltersInterface } from './interfaces';
 
 export interface UsersServiceInterface {
-  find(id: string): Promise<User>;
+  find(filters: UserFiltersInterface): Promise<User>;
   create(data: SignUpDto): Promise<User>;
 }
