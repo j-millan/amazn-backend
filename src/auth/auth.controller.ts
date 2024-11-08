@@ -7,8 +7,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 import { InjectionEnum } from './enums';
 import { AuthServiceInterface } from './auth.service.interface';
+import { HttpErrorDto } from 'src/common';
 import { SignUpDto, UserResponseDto } from 'src/auth/dto';
 import { plainToInstance } from 'class-transformer';
 
@@ -23,8 +25,16 @@ export class AuthController {
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'User sign up.' })
-  @ApiResponse({ status: HttpStatus.CREATED, type: UserResponseDto })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Created',
+    type: UserResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad Request',
+    type: HttpErrorDto,
+  })
   async singUp(@Body() data: SignUpDto): Promise<UserResponseDto> {
     const SERVICE_RESPONSE = await this._authService.signUp(data);
     return plainToInstance(UserResponseDto, SERVICE_RESPONSE);

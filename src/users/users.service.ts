@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+
 import { UsersServiceInterface } from './users.service.interface';
+import { UserFiltersInterface } from './interfaces';
 import { SignUpDto } from '../auth/dto';
 import { User } from './entities';
-import { UserFiltersInterface } from './interfaces';
 
 @Injectable()
 export class UsersService implements UsersServiceInterface {

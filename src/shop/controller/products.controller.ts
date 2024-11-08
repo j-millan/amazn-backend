@@ -13,6 +13,7 @@ import { ProductsService } from '../services/products.service';
 import { Product } from '../entities';
 import { InjectionEnum } from '../enums';
 import { CreateProductDto } from '../dto';
+import { HttpErrorDto } from 'src/common';
 
 @Controller('products')
 @ApiTags('products')
@@ -30,7 +31,7 @@ export class ProductsController {
     type: () => Product,
     isArray: true,
   })
-  @ApiResponse({ status: HttpStatus.NO_CONTENT })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'No Content' })
   async getProducts(@Res() response: Response): Promise<Product[] | Response> {
     const RESULT = await this._productsService.getAll();
 
@@ -48,7 +49,11 @@ export class ProductsController {
     description: 'Created',
     type: () => Product,
   })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad Request',
+    type: HttpErrorDto,
+  })
   async createProduct(@Body() data: CreateProductDto): Promise<Product> {
     return await this._productsService.create(data);
   }
