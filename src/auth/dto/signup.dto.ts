@@ -1,16 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-  IsOptional,
-  IsString,
-  IsStrongPassword,
-  Length,
-} from 'class-validator';
+import { IsOptional, IsString, Length } from 'class-validator';
 
 export class SignupDto {
   @IsString()
   @Length(16, 32)
-  @IsStrongPassword()
   @Type(() => String)
   @ApiProperty({
     name: 'password',
