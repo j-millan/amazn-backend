@@ -10,7 +10,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InjectionEnum } from './enums';
 import { AuthServiceInterface } from './auth.service.interface';
 import { User } from 'src/users/entities';
-import { SignupDto } from 'src/auth/dto';
+import { SignUpDto } from 'src/auth/dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -20,12 +20,12 @@ export class AuthController {
     private _authService: AuthServiceInterface,
   ) {}
 
-  @Post('sign-up')
+  @Post('signup')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'User sign up.' })
   @ApiResponse({ status: HttpStatus.CREATED, type: User })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
-  async singUp(@Body() data: SignupDto): Promise<User> {
+  async singUp(@Body() data: SignUpDto): Promise<User> {
     return await this._authService.signUp(data);
   }
 }

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, Length } from 'class-validator';
 
-export class SignupDto {
+export class SignUpDto {
   @IsString()
   @Length(16, 32)
   @Type(() => String)
