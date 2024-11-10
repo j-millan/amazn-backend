@@ -1,7 +1,9 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+
 import { AuthServiceInterface } from './auth.service.interface';
 import { User } from 'src/users/entities';
-import { SignUpDto } from 'src/auth/dto';
+import { SignInDto, SignInResponseDto, SignUpDto } from 'src/auth/dto';
 import { InjectionEnum as UsersInjectionEnum } from 'src/users/enums';
 import { UsersServiceInterface } from 'src/users/users.service.interface';
 import { HTTP_EXCEPTION_MAP } from 'src/common';
@@ -22,12 +24,14 @@ export class AuthService implements AuthServiceInterface {
       throw BAD_REQUEST_EXCEPTION('email or phone number is required');
     }
 
-    const EMAIL_USER = this._usersService.find({ email: data.email });
-    const PHONE_USER = this._usersService.find({
-      phoneNumber: data.phoneNumber,
-    });
+    const USER = await this._usersService.findByEmailOrPhoneNumber(
+      data.email,
+      data.phoneNumber,
+    );
 
-    if (EMAIL_USER || PHONE_USER) {
+    console.debug(USER);
+
+    if (USER) {
       throw BAD_REQUEST_EXCEPTION(
         'the email/phone number provided is already in use',
       );
@@ -36,7 +40,28 @@ export class AuthService implements AuthServiceInterface {
     return this._usersService.create(data);
   }
 
-  async signIn(): Promise<void> {
-    console.log('Sign In');
+  async signIn(data: SignInDto): Promise<SignInResponseDto> {
+    const BAD_REQUEST_EXCEPTION = HTTP_EXCEPTION_MAP.get(
+      HttpStatus.BAD_REQUEST,
+    );
+
+    if (!data.email && !data.phoneNumber) {
+      throw BAD_REQUEST_EXCEPTION('email or phone number is required');
+    }
+
+    const USER = await this._usersService.findByEmailOrPhoneNumber(
+      data.email,
+      data.phoneNumber,
+    );
+
+    if (USER) {
+      if (await bcrypt.compare(data.password, USER.password)) {
+        return new SignInResponseDto('valid-jwt-token', USER);
+      }
+    }
+
+    throw BAD_REQUEST_EXCEPTION(
+      'the email/phone number or password provided are incorrect',
+    );
   }
 }

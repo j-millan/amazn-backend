@@ -27,7 +27,7 @@ export class ProductsController {
   @ApiOperation({ summary: 'Fetch all prodcuts.' })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Success',
+    description: 'OK',
     type: () => Product,
     isArray: true,
   })

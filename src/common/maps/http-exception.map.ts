@@ -13,7 +13,7 @@ import { HttpErrorDto } from '../dto/http-error.dto';
 
 export const HTTP_EXCEPTION_MAP = new Map<
   HttpStatus,
-  (message: string) => HttpException
+  (message?: string | string[]) => HttpException
 >();
 
 const GET_ERROR_OBJECT = (

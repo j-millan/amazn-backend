@@ -13,7 +13,22 @@ export class UsersService implements UsersServiceInterface {
   constructor(@InjectRepository(User) private _usersRepo: Repository<User>) {}
 
   async find(filters: UserFiltersInterface): Promise<User> {
+    console.debug(filters);
     return await this._usersRepo.findOne({ where: filters });
+  }
+
+  async findByEmailOrPhoneNumber(
+    email: string,
+    phoneNumber: string,
+  ): Promise<User | null> {
+    const EMAIL_USER = email ? this.find({ email }) : null;
+    const PHONE_USER = phoneNumber
+      ? this.find({
+          phoneNumber,
+        })
+      : null;
+
+    return EMAIL_USER || PHONE_USER;
   }
 
   async create(data: SignUpDto): Promise<User> {

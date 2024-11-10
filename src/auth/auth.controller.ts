@@ -11,7 +11,12 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InjectionEnum } from './enums';
 import { AuthServiceInterface } from './auth.service.interface';
 import { HttpErrorDto } from 'src/common';
-import { SignUpDto, UserResponseDto } from 'src/auth/dto';
+import {
+  SignInDto,
+  SignInResponseDto,
+  SignUpDto,
+  UserResponseDto,
+} from 'src/auth/dto';
 import { plainToInstance } from 'class-transformer';
 
 @Controller('auth')
@@ -24,7 +29,7 @@ export class AuthController {
 
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'User sign up.' })
+  @ApiOperation({ summary: 'User signup.' })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Created',
@@ -38,5 +43,22 @@ export class AuthController {
   async singUp(@Body() data: SignUpDto): Promise<UserResponseDto> {
     const SERVICE_RESPONSE = await this._authService.signUp(data);
     return plainToInstance(UserResponseDto, SERVICE_RESPONSE);
+  }
+
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'User login.' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'OK',
+    type: SignInResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad Request',
+    type: HttpErrorDto,
+  })
+  async signIn(@Body() data: SignInDto): Promise<SignInResponseDto> {
+    return await this._authService.signIn(data);
   }
 }
