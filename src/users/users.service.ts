@@ -12,9 +12,12 @@ import { User } from './entities';
 export class UsersService implements UsersServiceInterface {
   constructor(@InjectRepository(User) private _usersRepo: Repository<User>) {}
 
-  async find(filters: UserFiltersInterface): Promise<User> {
-    console.debug(filters);
-    return await this._usersRepo.findOne({ where: filters });
+  async find(filters: UserFiltersInterface): Promise<User | null> {
+    try {
+      return await this._usersRepo.findOneOrFail({ where: filters });
+    } catch {
+      return null;
+    }
   }
 
   async findByEmailOrPhoneNumber(

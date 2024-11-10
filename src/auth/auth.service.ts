@@ -6,7 +6,7 @@ import { User } from 'src/users/entities';
 import { SignInDto, SignInResponseDto, SignUpDto } from 'src/auth/dto';
 import { InjectionEnum as UsersInjectionEnum } from 'src/users/enums';
 import { UsersServiceInterface } from 'src/users/users.service.interface';
-import { HTTP_EXCEPTION_MAP } from 'src/common';
+import { throwHttpException } from 'src/common';
 
 @Injectable()
 export class AuthService implements AuthServiceInterface {
@@ -16,12 +16,11 @@ export class AuthService implements AuthServiceInterface {
   ) {}
 
   async signUp(data: SignUpDto): Promise<User> {
-    const BAD_REQUEST_EXCEPTION = HTTP_EXCEPTION_MAP.get(
-      HttpStatus.BAD_REQUEST,
-    );
-
     if (!data.email && !data.phoneNumber) {
-      throw BAD_REQUEST_EXCEPTION('email or phone number is required');
+      throwHttpException(
+        HttpStatus.BAD_REQUEST,
+        'email or phone number is required',
+      );
     }
 
     const USER = await this._usersService.findByEmailOrPhoneNumber(
@@ -32,7 +31,8 @@ export class AuthService implements AuthServiceInterface {
     console.debug(USER);
 
     if (USER) {
-      throw BAD_REQUEST_EXCEPTION(
+      throwHttpException(
+        HttpStatus.BAD_REQUEST,
         'the email/phone number provided is already in use',
       );
     }
@@ -41,12 +41,11 @@ export class AuthService implements AuthServiceInterface {
   }
 
   async signIn(data: SignInDto): Promise<SignInResponseDto> {
-    const BAD_REQUEST_EXCEPTION = HTTP_EXCEPTION_MAP.get(
-      HttpStatus.BAD_REQUEST,
-    );
-
     if (!data.email && !data.phoneNumber) {
-      throw BAD_REQUEST_EXCEPTION('email or phone number is required');
+      throwHttpException(
+        HttpStatus.BAD_REQUEST,
+        'email or phone number is required',
+      );
     }
 
     const USER = await this._usersService.findByEmailOrPhoneNumber(
@@ -60,7 +59,8 @@ export class AuthService implements AuthServiceInterface {
       }
     }
 
-    throw BAD_REQUEST_EXCEPTION(
+    throwHttpException(
+      HttpStatus.BAD_REQUEST,
       'the email/phone number or password provided are incorrect',
     );
   }
