@@ -5,9 +5,9 @@ import { UserResponseDto } from './user.dto';
 import { User } from 'src/users/entities';
 
 export class SignInDto {
+  @Type(() => String)
   @IsString()
   @Length(16, 32)
-  @Type(() => String)
   @ApiProperty({
     name: 'password',
     description: 'The user password',
@@ -15,11 +15,11 @@ export class SignInDto {
   })
   password: string;
 
+  @Type(() => String)
   @IsString()
   @IsEmail()
   @IsOptional()
   @Length(1, 254)
-  @Type(() => String)
   @ApiProperty({
     name: 'email',
     description: 'The user email',
@@ -28,10 +28,10 @@ export class SignInDto {
   })
   email?: string;
 
+  @Type(() => String)
   @IsString()
   @IsOptional()
   @Length(10, 20)
-  @Type(() => String)
   @ApiProperty({
     name: 'phoneNumber',
     description: 'The user phone number',
@@ -42,9 +42,9 @@ export class SignInDto {
 }
 
 export class SignUpDto extends SignInDto {
+  @Type(() => String)
   @IsString()
   @Length(2, 30)
-  @Type(() => String)
   @ApiProperty({
     name: 'firstName',
     description: 'The user first name',
@@ -52,9 +52,9 @@ export class SignUpDto extends SignInDto {
   })
   firstName: string;
 
+  @Type(() => String)
   @IsString()
   @Length(2, 30)
-  @Type(() => String)
   @ApiProperty({
     name: 'lastName',
     description: 'The user last name',
@@ -62,10 +62,10 @@ export class SignUpDto extends SignInDto {
   })
   lastName: string;
 
+  @Type(() => String)
   @IsString()
   @IsOptional()
   @Length(5, 30)
-  @Type(() => String)
   @ApiProperty({
     name: 'username',
     description: 'The user username',
