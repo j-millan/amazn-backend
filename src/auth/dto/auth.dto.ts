@@ -3,11 +3,11 @@ import { plainToInstance, Type } from 'class-transformer';
 import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
 import { UserResponseDto } from './user.dto';
 import { User } from 'src/users/entities';
+import { IsPasswordValid } from '../validators';
 
 export class SignInDto {
   @Type(() => String)
   @IsString()
-  @Length(16, 32)
   @ApiProperty({
     name: 'password',
     description: 'The user password',
@@ -42,6 +42,16 @@ export class SignInDto {
 }
 
 export class SignUpDto extends SignInDto {
+  @Type(() => String)
+  @IsPasswordValid()
+  @IsString()
+  @ApiProperty({
+    name: 'password',
+    description: 'The user password',
+    type: String,
+  })
+  password: string;
+
   @Type(() => String)
   @IsString()
   @Length(2, 30)
