@@ -53,7 +53,7 @@ Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
 	$ npm install
 	```
 4. Generate a secret key for jwt generation:
-		```
+		```bash
 		$ openssl rand  -hex 32
 		```
 5. Duplicate the `.env.template` file as `.env.local` and replace variable values with the values we used to create our database and the secret JWT key.
