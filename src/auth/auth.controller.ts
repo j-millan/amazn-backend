@@ -17,7 +17,6 @@ import {
   SignUpDto,
   UserResponseDto,
 } from 'src/auth/dto';
-import { plainToInstance } from 'class-transformer';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -40,9 +39,8 @@ export class AuthController {
     description: 'Bad Request',
     type: HttpErrorDto,
   })
-  async singUp(@Body() data: SignUpDto): Promise<UserResponseDto> {
-    const SERVICE_RESPONSE = await this._authService.signUp(data);
-    return plainToInstance(UserResponseDto, SERVICE_RESPONSE);
+  async singUp(@Body() data: SignUpDto): Promise<SignInResponseDto> {
+    return await this._authService.signUp(data);
   }
 
   @Post('login')
@@ -52,6 +50,11 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'OK',
     type: SignInResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Unauthorized',
+    type: HttpErrorDto,
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,

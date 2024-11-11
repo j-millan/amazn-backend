@@ -35,9 +35,13 @@ export class UsersService implements UsersServiceInterface {
   }
 
   async create(data: SignUpDto): Promise<User> {
-    data.password = await bcrypt.hash(data.password, 10);
+    const DATA = {
+      ...data,
+      password: await bcrypt.hash(data.password, 10),
+    };
+
     const NEW_USER = await this._usersRepo.save(
-      await this._usersRepo.create(data),
+      await this._usersRepo.create(DATA),
     );
 
     return NEW_USER;
