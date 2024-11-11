@@ -7,13 +7,13 @@ import {
   Post,
   Res,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProductsService } from '../services/products.service';
 import { Product } from '../entities';
 import { InjectionEnum } from '../enums';
 import { CreateProductDto } from '../dto';
 import { HttpErrorDto } from 'src/common';
+import { Response } from 'express';
 
 @Controller('products')
 @ApiTags('products')
@@ -32,14 +32,14 @@ export class ProductsController {
     isArray: true,
   })
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'No Content' })
-  async getProducts(@Res() response: Response): Promise<Product[] | Response> {
+  async getProducts(@Res() response: Response): Promise<Response> {
     const RESULT = await this._productsService.getAll();
 
     if (!RESULT.length) {
       return response.status(HttpStatus.NO_CONTENT).send();
     }
 
-    return RESULT;
+    response.status(HttpStatus.OK).json(RESULT);
   }
 
   @Post()
