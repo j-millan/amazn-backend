@@ -5,12 +5,19 @@ import { TYPE_ORM_CONFIG } from './common';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 
-const configModule = ConfigModule.forRoot({
+const CONFIG_MODULE = ConfigModule.forRoot({
   envFilePath: '.env.local',
+  isGlobal: true,
 });
 
 @Module({
-  imports: [configModule, TYPE_ORM_CONFIG, ShopModule, AuthModule, UsersModule],
+  imports: [
+    CONFIG_MODULE,
+    TYPE_ORM_CONFIG,
+    ShopModule,
+    AuthModule,
+    UsersModule,
+  ],
   controllers: [],
   providers: [],
 })
