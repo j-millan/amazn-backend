@@ -52,9 +52,13 @@ Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
 	```bash
 	$ npm install
 	```
-4. Duplicate the `.env.template` file as `.env.local` and replace variable values with the values we used to create our database.
+4. Generate a secret key for jwt generation:
+		```
+		$ openssl rand  -hex 32
+		```
+5. Duplicate the `.env.template` file as `.env.local` and replace variable values with the values we used to create our database and the secret JWT key.
 
-5. Run migrations:
+6. Run migrations:
 	```bash
 	$ npm run migration:run
 	```
