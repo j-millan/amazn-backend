@@ -28,8 +28,6 @@ export class AuthService implements AuthServiceInterface {
       data.phoneNumber,
     );
 
-    console.debug(USER);
-
     if (USER) {
       throwHttpException(
         HttpStatus.BAD_REQUEST,

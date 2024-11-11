@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { plainToInstance, Type } from 'class-transformer';
-import { IsOptional, IsString, Length } from 'class-validator';
+import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
 import { UserResponseDto } from './user.dto';
 import { User } from 'src/users/entities';
 
@@ -16,6 +16,7 @@ export class SignInDto {
   password: string;
 
   @IsString()
+  @IsEmail()
   @IsOptional()
   @Length(1, 254)
   @Type(() => String)
