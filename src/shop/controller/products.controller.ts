@@ -12,7 +12,7 @@ import { ProductsService } from '../services/products.service';
 import { Product } from '../entities';
 import { InjectionEnum } from '../enums';
 import { CreateProductDto } from '../dto';
-import { HttpErrorDto } from 'src/common';
+import { HttpErrorDto } from 'src/core';
 import { Response } from 'express';
 
 @Controller('products')

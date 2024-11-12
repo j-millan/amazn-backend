@@ -10,7 +10,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { InjectionEnum } from './enums';
 import { AuthServiceInterface } from './auth.service.interface';
-import { HttpErrorDto } from 'src/common';
+import { HttpErrorDto } from 'src/core';
 import {
   SignInDto,
   SignInResponseDto,

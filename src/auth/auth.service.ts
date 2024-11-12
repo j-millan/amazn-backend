@@ -5,7 +5,7 @@ import { AuthServiceInterface } from './auth.service.interface';
 import { SignInDto, SignInResponseDto, SignUpDto } from 'src/auth/dto';
 import { InjectionEnum as UsersInjectionEnum } from 'src/users/enums';
 import { UsersServiceInterface } from 'src/users/users.service.interface';
-import { throwHttpException } from 'src/common';
+import { throwHttpException } from 'src/core';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

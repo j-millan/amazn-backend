@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ShopModule } from './shop/shop.module';
 import { ConfigModule } from '@nestjs/config';
-import { TYPE_ORM_CONFIG } from './common';
+import { TYPE_ORM_CONFIG } from './core';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 

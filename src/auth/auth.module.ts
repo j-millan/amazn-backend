@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { InjectionEnum } from './enums/injection.enum';
 import { UsersModule } from 'src/users/users.module';
 import { AuthController } from './auth.controller';
-import { JWT_CONFIG } from 'src/common';
+import { JWT_CONFIG } from 'src/core';
 
 @Module({
   imports: [JWT_CONFIG, UsersModule],
