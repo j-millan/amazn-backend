@@ -9,6 +9,7 @@ import {
 
 async function bootstrap() {
   const APP = await NestFactory.create(AppModule);
+  APP.enableCors({ origin: 'http://localhost:3001' });
   registerGlobals(APP);
 
   const SWAGGER_CONFIG = new DocumentBuilder()
