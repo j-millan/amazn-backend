@@ -17,22 +17,12 @@ export class AuthService implements AuthServiceInterface {
   ) {}
 
   async signUp(data: SignUpDto): Promise<SignInResponseDto> {
-    if (!data.email && !data.phoneNumber) {
-      throwHttpException(
-        HttpStatus.BAD_REQUEST,
-        'email or phone number is required',
-      );
-    }
-
-    const EXISTING_USER = await this._usersService.findByEmailOrPhoneNumber(
-      data.email,
-      data.phoneNumber,
-    );
+    const EXISTING_USER = await this._usersService.find({ email: data.email });
 
     if (EXISTING_USER) {
       throwHttpException(
         HttpStatus.BAD_REQUEST,
-        'the email/phone number provided is already in use',
+        'the email address provided is already in use',
       );
     }
 
@@ -44,11 +34,10 @@ export class AuthService implements AuthServiceInterface {
   }
 
   async signIn(data: SignInDto): Promise<SignInResponseDto> {
-    console.debug(data);
     if (!data.email && !data.phoneNumber) {
       throwHttpException(
         HttpStatus.BAD_REQUEST,
-        'email or phone number is required',
+        'email address or phone number is required',
       );
     }
 
@@ -67,11 +56,13 @@ export class AuthService implements AuthServiceInterface {
         const JWT_TOKEN = await this._jwtService.signAsync(PAYLOAD);
         return new SignInResponseDto(JWT_TOKEN, USER);
       }
+
+      throwHttpException(HttpStatus.UNAUTHORIZED, 'your password is incorrect');
     }
 
     throwHttpException(
       HttpStatus.UNAUTHORIZED,
-      'the email/phone number or password provided are incorrect',
+      'we cannot find an account with that email address or phone number',
     );
   }
 }

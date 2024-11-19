@@ -3,7 +3,6 @@ import { plainToInstance, Type } from 'class-transformer';
 import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
 import { UserResponseDto } from './user.dto';
 import { User } from 'src/users/entities';
-import { IsPasswordValid } from '../validators';
 
 export class SignInDto {
   @Type(() => String)
@@ -39,50 +38,6 @@ export class SignInDto {
     required: false,
   })
   phoneNumber?: string;
-}
-
-export class SignUpDto extends SignInDto {
-  @Type(() => String)
-  @IsPasswordValid()
-  @IsString()
-  @ApiProperty({
-    name: 'password',
-    description: 'The user password',
-    type: String,
-  })
-  password: string;
-
-  @Type(() => String)
-  @IsString()
-  @Length(2, 30)
-  @ApiProperty({
-    name: 'firstName',
-    description: 'The user first name',
-    type: String,
-  })
-  firstName: string;
-
-  @Type(() => String)
-  @IsString()
-  @Length(2, 30)
-  @ApiProperty({
-    name: 'lastName',
-    description: 'The user last name',
-    type: String,
-  })
-  lastName: string;
-
-  @Type(() => String)
-  @IsString()
-  @IsOptional()
-  @Length(5, 30)
-  @ApiProperty({
-    name: 'username',
-    description: 'The user username',
-    type: String,
-    required: false,
-  })
-  username?: string;
 }
 
 export class SignInResponseDto {
