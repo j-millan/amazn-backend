@@ -26,7 +26,7 @@ export class AuthController {
     private _authService: AuthServiceInterface,
   ) {}
 
-  @Post('signup')
+  @Post('sign-up')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'User signup.' })
   @ApiResponse({
