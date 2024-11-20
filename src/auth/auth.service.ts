@@ -34,17 +34,14 @@ export class AuthService implements AuthServiceInterface {
   }
 
   async signIn(data: SignInDto): Promise<SignInResponseDto> {
-    if (!data.email && !data.phoneNumber) {
+    if (!data.email) {
       throwHttpException(
         HttpStatus.BAD_REQUEST,
         'email address or phone number is required',
       );
     }
 
-    const USER = await this._usersService.findByEmailOrPhoneNumber(
-      data.email,
-      data.phoneNumber,
-    );
+    const USER = await this._usersService.findByEmailOrPhoneNumber(data.email);
 
     if (USER) {
       if (await bcrypt.compare(data.password, USER.password)) {
@@ -57,7 +54,7 @@ export class AuthService implements AuthServiceInterface {
         return new SignInResponseDto(JWT_TOKEN, USER);
       }
 
-      throwHttpException(HttpStatus.UNAUTHORIZED, 'your password is incorrect');
+      throwHttpException(HttpStatus.UNAUTHORIZED, 'the password is incorrect');
     }
 
     throwHttpException(

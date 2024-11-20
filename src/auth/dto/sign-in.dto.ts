@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { plainToInstance, Type } from 'class-transformer';
-import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
+import { IsString } from 'class-validator';
 import { UserResponseDto } from './user.dto';
 import { User } from 'src/users/entities';
 
@@ -16,28 +16,12 @@ export class SignInDto {
 
   @Type(() => String)
   @IsString()
-  @IsEmail()
-  @IsOptional()
-  @Length(1, 254)
   @ApiProperty({
     name: 'email',
-    description: 'The user email',
+    description: 'The user email or phone number',
     type: String,
-    required: false,
   })
-  email?: string;
-
-  @Type(() => String)
-  @IsString()
-  @IsOptional()
-  @Length(10, 20)
-  @ApiProperty({
-    name: 'phoneNumber',
-    description: 'The user phone number',
-    type: String,
-    required: false,
-  })
-  phoneNumber?: string;
+  email: string;
 }
 
 export class SignInResponseDto {

@@ -20,14 +20,13 @@ export class UsersService implements UsersServiceInterface {
     }
   }
 
-  async findByEmailOrPhoneNumber(
-    email: string,
-    phoneNumber: string,
-  ): Promise<User | null> {
-    const EMAIL_USER = email ? this.find({ email }) : null;
-    const PHONE_USER = phoneNumber
-      ? this.find({
-          phoneNumber,
+  async findByEmailOrPhoneNumber(credential: string): Promise<User | null> {
+    const EMAIL_USER = credential
+      ? await this.find({ email: credential })
+      : null;
+    const PHONE_USER = credential
+      ? await this.find({
+          phoneNumber: credential,
         })
       : null;
 
