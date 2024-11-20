@@ -29,21 +29,11 @@ export class SignUpDto {
   @IsString()
   @Length(2, 30)
   @ApiProperty({
-    name: 'firstName',
-    description: 'The user first name',
+    name: 'name',
+    description: 'The user first and last name',
     type: String,
   })
-  firstName: string;
-
-  @Type(() => String)
-  @IsString()
-  @Length(2, 30)
-  @ApiProperty({
-    name: 'lastName',
-    description: 'The user last name',
-    type: String,
-  })
-  lastName: string;
+  name: string;
 
   @Type(() => String)
   @IsString()

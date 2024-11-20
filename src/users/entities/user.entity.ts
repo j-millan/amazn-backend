@@ -11,11 +11,8 @@ export class User {
   @Column('varchar', { length: 255 })
   password: string;
 
-  @Column('varchar', { length: 30 })
-  firstName: string;
-
-  @Column('varchar', { length: 30 })
-  lastName: string;
+  @Column('varchar', { length: 60, nullable: true })
+  name: string;
 
   @Column('varchar', { length: 15, unique: true, nullable: true })
   phoneNumber?: string;

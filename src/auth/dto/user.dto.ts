@@ -9,19 +9,11 @@ export class UserResponseDto {
 
   @Expose()
   @ApiProperty({
-    name: 'firstName',
-    description: 'The user first name',
+    name: 'name',
+    description: 'The user first and last name',
     type: String,
   })
-  firstName: string;
-
-  @Expose()
-  @ApiProperty({
-    name: 'lastName',
-    description: 'The user last name',
-    type: String,
-  })
-  lastName: string;
+  name: string;
 
   @Expose()
   @ApiProperty({
