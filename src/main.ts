@@ -9,6 +9,8 @@ import {
 
 async function bootstrap() {
   const APP = await NestFactory.create(AppModule);
+  const PORT = process.env.PORT || 3000;
+
   APP.enableCors({ origin: 'http://localhost:3001' });
   registerGlobals(APP);
 
@@ -20,7 +22,7 @@ async function bootstrap() {
   const DOCUMENT = SwaggerModule.createDocument(APP, SWAGGER_CONFIG);
   SwaggerModule.setup('api/docs', APP, DOCUMENT);
 
-  await APP.listen(3000);
+  await APP.listen(PORT);
 }
 
 async function registerGlobals(app: INestApplication): Promise<void> {
