@@ -12,11 +12,11 @@ export class OTPSubscriber implements EntitySubscriberInterface<OTP> {
     return OTP;
   }
 
-  afterInsert(event: InsertEvent<OTP>): Promise<any> | void {
+  async afterInsert(event: InsertEvent<OTP>): Promise<void> {
     const CREATED_AT = new Date(event.entity.createdAt);
     const EXPIRES_AT = new Date(CREATED_AT.getTime() + 30 * 1000); // 30 seconds
 
     event.entity.expiresAt = EXPIRES_AT;
-    event.manager.save(event.entity);
+    await event.manager.save(event.entity);
   }
 }
