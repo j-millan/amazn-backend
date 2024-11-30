@@ -3,10 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { throwHttpException } from 'src/core';
-import { OTP } from '../entities';
+import { OTPServiceInterface } from './otp.service.interface';
+import { OTP } from '../../entities';
 
 @Injectable()
-export class OTPService {
+export class OTPService implements OTPServiceInterface {
   constructor(@InjectRepository(OTP) private _otpRepository: Repository<OTP>) {}
 
   async generateOTP(email: string): Promise<void> {
