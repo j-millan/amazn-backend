@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './services';
-import { AuthInjectionEnum } from './enums/injection.enum';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { JWT_CONFIG } from 'src/core';
 import { UsersModule } from 'src/users/users.module';
 import { AuthController } from './auth.controller';
-import { JWT_CONFIG } from 'src/core';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthInjectionEnum } from './enums/injection.enum';
+import { AuthService } from './services';
 import { OTP } from './entities';
 
 @Module({

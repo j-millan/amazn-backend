@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import slugify from 'slugify';
-import { CreateProductDto } from '../dto';
-import { Product } from '../entities';
+
+import { ProductsServiceInterface } from './products-service.service.interface';
+import { CreateProductDto } from '../../dto';
+import { Product } from '../../entities';
 
 @Injectable()
-export class ProductsService {
+export class ProductsService implements ProductsServiceInterface {
   constructor(
     @InjectRepository(Product) private _productsRepo: Repository<Product>,
   ) {}
@@ -25,7 +27,7 @@ export class ProductsService {
 
   async create(data: CreateProductDto): Promise<Product> {
     const PRODUCT = await this._productsRepo.save(
-      await this._productsRepo.create(data),
+      this._productsRepo.create(data),
     );
 
     this._setSlug(PRODUCT);

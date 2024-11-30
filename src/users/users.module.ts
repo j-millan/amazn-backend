@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersInjectionEnum } from './enums';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module } from '@nestjs/common';
+
+import { UsersInjectionEnum } from './enums';
+import { UsersService } from './users.service';
 import { User } from './entities';
 
 @Module({

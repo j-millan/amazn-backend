@@ -8,15 +8,15 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { AuthInjectionEnum } from './enums';
-import { AuthServiceInterface } from './services/auth-service/auth.service.interface';
 import { HttpErrorDto } from 'src/core';
+import { AuthInjectionEnum } from './enums';
 import {
   SignInDto,
   SignInResponseDto,
   SignUpDto,
   UserResponseDto,
 } from 'src/auth/dto';
+import { AuthServiceInterface } from './services/auth-service/auth.service.interface';
 
 @Controller('auth')
 @ApiTags('auth')

@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import {
   BeforeUpdate,
   Column,
@@ -6,6 +5,7 @@ import {
   Entity,
   PrimaryColumn,
 } from 'typeorm';
+import { format } from 'date-fns';
 
 @Entity()
 export class OTP {

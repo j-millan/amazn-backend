@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ProductsController } from './controller/products.controller';
-import { ProductsService } from './services/products.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Product } from './entities';
+
 import { ShopInjectionEnum } from './enums';
+import { Product } from './entities';
+import { ProductsService } from './services/products-service/products.service';
+import { ProductsController } from './controller/products.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product])],

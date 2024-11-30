@@ -8,12 +8,13 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ProductsService } from '../services/products.service';
+import { Response } from 'express';
+
+import { HttpErrorDto } from 'src/core';
+import { ProductsService } from '../services/products-service/products.service';
 import { Product } from '../entities';
 import { ShopInjectionEnum } from '../enums';
 import { CreateProductDto } from '../dto';
-import { HttpErrorDto } from 'src/core';
-import { Response } from 'express';
 
 @Controller('products')
 @ApiTags('products')
