@@ -5,21 +5,24 @@ import { Repository } from 'typeorm';
 import { throwHttpException } from 'src/core';
 import { OTPServiceInterface } from './otp.service.interface';
 import { OTP } from '../../entities';
+import { GenerateOTPDto, VerifyOTPDto } from 'src/auth/dto';
 
 @Injectable()
 export class OTPService implements OTPServiceInterface {
   constructor(@InjectRepository(OTP) private _otpRepository: Repository<OTP>) {}
 
-  async generateOTP(email: string): Promise<void> {
+  async generateOTP({ email }: GenerateOTPDto): Promise<void> {
+    const PASSWORD = '123456';
     const OTP = this._otpRepository.create({
       email,
-      otp: '123456',
+      otp: PASSWORD,
+      expiresAt: new Date().toISOString(),
     });
 
     await this._otpRepository.save(OTP);
   }
 
-  async validateOTP(otp: string, email: string): Promise<boolean> {
+  async verifyOTP({ otp, email }: VerifyOTPDto): Promise<void> {
     const OTP = this._otpRepository.find({ where: { otp, email } });
 
     if (!OTP) {
@@ -27,8 +30,6 @@ export class OTPService implements OTPServiceInterface {
         HttpStatus.UNAUTHORIZED,
         'the OTP is invalid or has expired',
       );
-    } else {
-      return true;
     }
   }
 }

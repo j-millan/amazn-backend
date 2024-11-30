@@ -1,4 +1,6 @@
+import { GenerateOTPDto, VerifyOTPDto } from 'src/auth/dto';
+
 export interface OTPServiceInterface {
-  generateOTP(email: string): Promise<void>;
-  validateOTP(otp: string, email: string): Promise<boolean>;
+  generateOTP(data: GenerateOTPDto): Promise<void>;
+  verifyOTP(data: VerifyOTPDto): Promise<void>;
 }
