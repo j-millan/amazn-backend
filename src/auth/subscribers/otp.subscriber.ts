@@ -14,7 +14,7 @@ export class OTPSubscriber implements EntitySubscriberInterface<OTP> {
 
   async afterInsert(event: InsertEvent<OTP>): Promise<void> {
     const CREATED_AT = new Date(event.entity.createdAt);
-    const EXPIRES_AT = new Date(CREATED_AT.getTime() + 30 * 1000); // 30 seconds
+    const EXPIRES_AT = new Date(CREATED_AT.getTime() + 120 * 1000); // 2 minutes
 
     event.entity.expiresAt = EXPIRES_AT;
     await event.manager.save(event.entity);
