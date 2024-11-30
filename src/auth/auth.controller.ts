@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { InjectionEnum } from './enums';
-import { AuthServiceInterface } from './auth.service.interface';
+import { AuthInjectionEnum } from './enums';
+import { AuthServiceInterface } from './services/auth-service/auth.service.interface';
 import { HttpErrorDto } from 'src/core';
 import {
   SignInDto,
@@ -22,7 +22,7 @@ import {
 @ApiTags('auth')
 export class AuthController {
   constructor(
-    @Inject(InjectionEnum.AUTH_SERVICE)
+    @Inject(AuthInjectionEnum.AUTH_SERVICE)
     private _authService: AuthServiceInterface,
   ) {}
 

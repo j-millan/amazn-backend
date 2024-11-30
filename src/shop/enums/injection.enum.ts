@@ -1,3 +1,3 @@
-export enum InjectionEnum {
+export enum ShopInjectionEnum {
   PRODUCTS_SERVICE = 'ProductsService',
 }

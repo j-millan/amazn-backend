@@ -1,3 +1,3 @@
-export enum InjectionEnum {
+export enum AuthInjectionEnum {
   AUTH_SERVICE = 'AuthService',
 }
