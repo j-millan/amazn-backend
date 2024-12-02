@@ -9,9 +9,9 @@ import {
 
 async function bootstrap() {
   const APP = await NestFactory.create(AppModule);
-  const PORT = process.env.APP_PORT || 3000;
+  const PORT = process.env.APP_PORT || 3001;
 
-  APP.enableCors({ origin: 'http://localhost:3001' });
+  APP.enableCors({ origin: 'http://localhost:3000' });
   registerGlobals(APP);
 
   const SWAGGER_CONFIG = new DocumentBuilder()
