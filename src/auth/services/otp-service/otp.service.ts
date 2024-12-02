@@ -1,6 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
+import { Interval } from '@nestjs/schedule';
 
 import { throwHttpException } from 'src/core';
 import { OTPServiceInterface } from './otp.service.interface';
@@ -42,5 +43,18 @@ export class OTPService implements OTPServiceInterface {
     }
 
     return password;
+  }
+
+  @Interval(5 * 60 * 1000)
+  private async _cleanExpiredOTP(): Promise<void> {
+    const OTP = await this._otpRepository.find({
+      where: { expiresAt: LessThan(new Date()) },
+    });
+
+    if (OTP?.length) {
+      OTP.forEach((otp) => {
+        this._otpRepository.remove(otp);
+      });
+    }
   }
 }
