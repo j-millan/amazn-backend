@@ -7,6 +7,7 @@ import { AuthController } from './auth.controller';
 import { AuthInjectionEnum } from './enums/injection.enum';
 import { AuthService, OTPService } from './services';
 import { OTP } from './entities';
+import { OTPSubscriber } from './subscribers';
 
 @Module({
   imports: [JWT_CONFIG, TypeOrmModule.forFeature([OTP]), UsersModule],
@@ -20,6 +21,7 @@ import { OTP } from './entities';
       provide: AuthInjectionEnum.OTP_SERVICE,
       useClass: OTPService,
     },
+    OTPSubscriber,
   ],
 })
 export class AuthModule {}
