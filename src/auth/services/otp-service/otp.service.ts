@@ -12,7 +12,17 @@ import { OTP } from '../../entities';
 export class OTPService implements OTPServiceInterface {
   constructor(@InjectRepository(OTP) private _otpRepository: Repository<OTP>) {}
 
+  async findOne(filters: Partial<OTP>): Promise<OTP | null> {
+    return this._otpRepository.findOne({ where: filters });
+  }
+
   async generateOTP({ email }: GenerateOTPDto): Promise<void> {
+    const EXISTING_OTP = await this.findOne({ email });
+
+    if (EXISTING_OTP) {
+      this._otpRepository.remove(EXISTING_OTP);
+    }
+
     const PASSWORD = this._createPassword();
     const OTP = this._otpRepository.create({
       email,
@@ -24,7 +34,7 @@ export class OTPService implements OTPServiceInterface {
   }
 
   async verifyOTP({ otp, email }: VerifyOTPDto): Promise<void> {
-    const OTP = await this._otpRepository.findOne({ where: { otp, email } });
+    const OTP = await this.findOne({ email, otp });
 
     if (!OTP || OTP.expiresAt < new Date()) {
       throwHttpException(
@@ -32,6 +42,8 @@ export class OTPService implements OTPServiceInterface {
         'the OTP is invalid or has expired',
       );
     }
+
+    this._otpRepository.remove(OTP);
   }
 
   private _createPassword(): string {
@@ -52,9 +64,7 @@ export class OTPService implements OTPServiceInterface {
     });
 
     if (OTP?.length) {
-      OTP.forEach((otp) => {
-        this._otpRepository.remove(otp);
-      });
+      this._otpRepository.remove(OTP);
     }
   }
 }
