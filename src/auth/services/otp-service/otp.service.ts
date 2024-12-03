@@ -2,15 +2,21 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, Repository } from 'typeorm';
 import { Interval } from '@nestjs/schedule';
+import * as speakeasy from 'speakeasy';
+import * as bcrypt from 'bcrypt';
 
 import { throwHttpException } from 'src/core';
 import { OTPServiceInterface } from './otp.service.interface';
 import { GenerateOTPDto, VerifyOTPDto } from 'src/auth/dto';
 import { OTP } from '../../entities';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OTPService implements OTPServiceInterface {
-  constructor(@InjectRepository(OTP) private _otpRepository: Repository<OTP>) {}
+  constructor(
+    @InjectRepository(OTP) private _otpRepository: Repository<OTP>,
+    private _configService: ConfigService,
+  ) {}
 
   async findOne(filters: Partial<OTP>): Promise<OTP | null> {
     return this._otpRepository.findOne({ where: filters });
@@ -23,10 +29,10 @@ export class OTPService implements OTPServiceInterface {
       this._otpRepository.remove(EXISTING_OTP);
     }
 
-    const PASSWORD = this._createPassword();
+    const TOKEN = await this._generateToken();
     const OTP = this._otpRepository.create({
       email,
-      otp: PASSWORD,
+      otp: TOKEN,
       expiresAt: new Date().toISOString(),
     });
 
@@ -34,9 +40,13 @@ export class OTPService implements OTPServiceInterface {
   }
 
   async verifyOTP({ otp, email }: VerifyOTPDto): Promise<void> {
-    const OTP = await this.findOne({ email, otp });
+    const OTP = await this.findOne({ email });
 
-    if (!OTP || OTP.expiresAt < new Date()) {
+    if (
+      !OTP ||
+      OTP.expiresAt < new Date() ||
+      !(await bcrypt.compare(otp, OTP.otp))
+    ) {
       throwHttpException(
         HttpStatus.UNAUTHORIZED,
         'the OTP is invalid or has expired',
@@ -46,15 +56,15 @@ export class OTPService implements OTPServiceInterface {
     this._otpRepository.remove(OTP);
   }
 
-  private _createPassword(): string {
-    const DIGITS = '0123456789';
-    let password = '';
+  private async _generateToken(): Promise<string> {
+    const SECRET = this._configService.get('OTP_SECRET');
+    const TOKEN = speakeasy.totp({
+      secret: SECRET,
+      digits: 6,
+      encoding: 'hex',
+    });
 
-    for (let i = 0; i < 6; i++) {
-      password += DIGITS[Math.floor(Math.random() * 10)];
-    }
-
-    return password;
+    return await bcrypt.hash(TOKEN, 10);
   }
 
   @Interval(5 * 60 * 1000)
