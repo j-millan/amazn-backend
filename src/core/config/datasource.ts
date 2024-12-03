@@ -8,7 +8,7 @@ export const CONNECTION_SOURCE = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   entities: [`${__dirname}/../../**/**.entity{.ts,.js}`],
-  subscribers: [`${__dirname}/../../**/**.subscriber{.ts,.js}`],
+  // subscribers: [`${__dirname}/../../**/**.subscriber{.ts,.js}`],
   migrations: [`${__dirname}/../../migrations/**.ts`],
   synchronize: false,
 });
