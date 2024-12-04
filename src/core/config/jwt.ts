@@ -8,7 +8,7 @@ export const JWT_CONFIG = JwtModule.registerAsync({
     global: true,
     secret: configService.get('JWT_SECRET'),
     signOptions: {
-      expiresIn: configService.get('JWT_EXPIRES_IN'),
+      expiresIn: `${configService.get('JWT_EXPIRES_IN')}s`,
     },
   }),
 });
