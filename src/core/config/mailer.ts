@@ -13,5 +13,8 @@ export const MAILER_CONFIG = MailerModule.forRootAsync({
         pass: configService.get('SMTP_PASSWORD'),
       },
     },
+    defaults: {
+      from: configService.get('SMTP_SENDER'),
+    },
   }),
 });

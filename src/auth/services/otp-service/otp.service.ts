@@ -1,7 +1,10 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LessThan, Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 import { Interval } from '@nestjs/schedule';
+import { MailerService } from '@nestjs-modules/mailer';
+import { SentMessageInfo } from 'nodemailer';
+import { LessThan, Repository } from 'typeorm';
 import * as speakeasy from 'speakeasy';
 import * as bcrypt from 'bcrypt';
 
@@ -9,13 +12,13 @@ import { throwHttpException } from 'src/core';
 import { OTPServiceInterface } from './otp.service.interface';
 import { GenerateOTPDto, VerifyOTPDto } from 'src/auth/dto';
 import { OTP } from '../../entities';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OTPService implements OTPServiceInterface {
   constructor(
     @InjectRepository(OTP) private _otpRepository: Repository<OTP>,
     private _configService: ConfigService,
+    private _mailService: MailerService,
   ) {}
 
   async findOne(filters: Partial<OTP>): Promise<OTP | null> {
@@ -29,13 +32,14 @@ export class OTPService implements OTPServiceInterface {
       this._otpRepository.remove(EXISTING_OTP);
     }
 
-    const TOKEN = await this._generateToken();
+    const TOKEN = this._generateToken();
     const OTP = this._otpRepository.create({
       email,
-      otp: TOKEN,
+      otp: await bcrypt.hash(TOKEN, 10),
       expiresAt: new Date().toISOString(),
     });
 
+    await this._sendEmail(email, TOKEN);
     await this._otpRepository.save(OTP);
   }
 
@@ -56,7 +60,7 @@ export class OTPService implements OTPServiceInterface {
     this._otpRepository.remove(OTP);
   }
 
-  private async _generateToken(): Promise<string> {
+  private _generateToken(): string {
     const SECRET = this._configService.get('OTP_SECRET');
     const TOKEN = speakeasy.totp({
       secret: SECRET,
@@ -64,7 +68,18 @@ export class OTPService implements OTPServiceInterface {
       encoding: 'hex',
     });
 
-    return await bcrypt.hash(TOKEN, 10);
+    return TOKEN;
+  }
+
+  private async _sendEmail(
+    email: string,
+    token: string,
+  ): Promise<SentMessageInfo> {
+    return await this._mailService.sendMail({
+      to: email,
+      subject: 'Please verify your email address',
+      text: `Your One Time Password (OTP) is: ${token}. It will be valid for the next 2 mintues. Please do not share it with anyone.`,
+    });
   }
 
   @Interval(5 * 60 * 1000)
