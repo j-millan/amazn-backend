@@ -75,8 +75,13 @@ export class OTPService implements OTPServiceInterface {
     email: string,
     token: string,
   ): Promise<SentMessageInfo> {
+    const TO =
+      this._configService.get('APP_ENV') === 'dev'
+        ? this._configService.get('SMTP_TEST_RECIPIENT')
+        : email;
+
     return await this._mailService.sendMail({
-      to: email,
+      to: TO,
       subject: 'Please verify your email address',
       text: `Your One Time Password (OTP) is: ${token}. It will be valid for the next 2 mintues. Please do not share it with anyone.`,
     });
