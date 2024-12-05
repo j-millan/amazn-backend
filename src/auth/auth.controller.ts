@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { HttpErrorDto } from 'src/core';
+import { HttpErrorDto, MessageResponseDto } from 'src/core';
 import { AuthInjectionEnum } from './enums';
 import {
   SignInDto,
@@ -73,27 +73,37 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({ type: GenerateOTPDto })
   @ApiOperation({ summary: 'Generate OTP.' })
-  @ApiResponse({ status: HttpStatus.CREATED, description: 'Created' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Created',
+    type: MessageResponseDto,
+  })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: 'Bad Request',
     type: HttpErrorDto,
   })
-  async genrateOTP(@Body() data: GenerateOTPDto): Promise<void> {
-    return await this._otpService.generateOTP(data);
+  async genrateOTP(@Body() data: GenerateOTPDto): Promise<MessageResponseDto> {
+    await this._otpService.generateOTP(data);
+    return { message: 'OTP has been generated. Check your email.' };
   }
 
   @Post('otp/verify')
   @HttpCode(HttpStatus.OK)
   @ApiBody({ type: VerifyOTPDto })
   @ApiOperation({ summary: 'Verify OTP.' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'OK' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'OK',
+    type: MessageResponseDto,
+  })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: 'Unauthorized',
     type: HttpErrorDto,
   })
-  async validateOTP(@Body() data: VerifyOTPDto): Promise<void> {
-    return await this._otpService.verifyOTP(data);
+  async validateOTP(@Body() data: VerifyOTPDto): Promise<MessageResponseDto> {
+    await this._otpService.verifyOTP(data);
+    return { message: 'OTP verification sucessful.' };
   }
 }
