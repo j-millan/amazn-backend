@@ -22,7 +22,7 @@ export class AuthService implements AuthServiceInterface {
     if (EXISTING_USER) {
       throwHttpException(
         HttpStatus.BAD_REQUEST,
-        'the email address provided is already in use',
+        'that email address is already in use',
       );
     }
 

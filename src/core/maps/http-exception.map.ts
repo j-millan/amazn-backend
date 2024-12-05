@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   GatewayTimeoutException,
   HttpException,
@@ -61,6 +62,12 @@ HTTP_EXCEPTION_MAP.set(405, (message?: string | string[]) => {
 HTTP_EXCEPTION_MAP.set(408, (message?: string | string[]) => {
   return new GatewayTimeoutException(
     GET_ERROR_OBJECT('Request Timeout', HttpStatus.REQUEST_TIMEOUT, message),
+  );
+});
+
+HTTP_EXCEPTION_MAP.set(409, (message?: string | string[]) => {
+  return new ConflictException(
+    GET_ERROR_OBJECT('Conflict', HttpStatus.CONFLICT, message),
   );
 });
 

@@ -6,11 +6,18 @@ import {
   Inject,
   Post,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiProperty,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
-import { HttpErrorDto, MessageResponseDto } from 'src/core';
+import { HttpErrorDto, MessageResponseDto, throwHttpException } from 'src/core';
 import { AuthInjectionEnum } from './enums';
 import {
+  CheckEmailDto,
   SignInDto,
   SignInResponseDto,
   SignUpDto,
@@ -19,6 +26,8 @@ import {
 import { OTPServiceInterface } from './services/otp-service/otp.service.interface';
 import { AuthServiceInterface } from './services/auth-service/auth.service.interface';
 import { GenerateOTPDto, VerifyOTPDto } from './dto/otp.dto';
+import { UsersInjectionEnum } from 'src/users/enums';
+import { UsersServiceInterface } from 'src/users/users.service.interface';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -26,6 +35,8 @@ export class AuthController {
   constructor(
     @Inject(AuthInjectionEnum.AUTH_SERVICE)
     private _authService: AuthServiceInterface,
+    @Inject(UsersInjectionEnum.USERS_SERVICE)
+    private _usersService: UsersServiceInterface,
     @Inject(AuthInjectionEnum.OTP_SERVICE)
     private _otpService: OTPServiceInterface,
   ) {}
@@ -67,6 +78,33 @@ export class AuthController {
   })
   async signIn(@Body() data: SignInDto): Promise<SignInResponseDto> {
     return await this._authService.signIn(data);
+  }
+
+  @Post('check-email')
+  @HttpCode(HttpStatus.OK)
+  @ApiProperty({ type: CheckEmailDto })
+  @ApiOperation({ summary: 'Check for email availability.' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'OK',
+    type: MessageResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'Conflict',
+    type: HttpErrorDto,
+  })
+  async emailCheck(
+    @Body() { email }: CheckEmailDto,
+  ): Promise<MessageResponseDto> {
+    if (await this._usersService.find({ email })) {
+      throwHttpException(
+        HttpStatus.CONFLICT,
+        'that email address is already in use',
+      );
+    }
+
+    return { message: 'email is available' };
   }
 
   @Post('otp/generate')

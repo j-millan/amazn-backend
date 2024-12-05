@@ -2,3 +2,4 @@ export * from './sign-in.dto';
 export * from './sign-up.dto';
 export * from './user.dto';
 export * from './otp.dto';
+export * from './check-email.dto';
