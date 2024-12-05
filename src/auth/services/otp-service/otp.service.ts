@@ -33,6 +33,7 @@ export class OTPService implements OTPServiceInterface {
     }
 
     const TOKEN = this._generateToken();
+
     const OTP = this._otpRepository.create({
       email,
       otp: await bcrypt.hash(TOKEN, 10),
@@ -80,11 +81,15 @@ export class OTPService implements OTPServiceInterface {
         ? this._configService.get('SMTP_TEST_RECIPIENT')
         : email;
 
-    return await this._mailService.sendMail({
-      to: TO,
-      subject: 'Please verify your email address',
-      text: `Your One Time Password (OTP) is: ${token}. It will be valid for the next 2 mintues. Please do not share it with anyone.`,
-    });
+    try {
+      return await this._mailService.sendMail({
+        to: TO,
+        subject: 'Please verify your email address',
+        text: `Your One Time Password (OTP) is: ${token}. It will be valid for the next 2 mintues. Please do not share it with anyone.`,
+      });
+    } catch (error) {
+      throwHttpException(HttpStatus.INTERNAL_SERVER_ERROR, error.message);
+    }
   }
 
   @Interval(5 * 60 * 1000)
