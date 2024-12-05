@@ -7,11 +7,16 @@ import {
   Post,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiProperty,
   ApiResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { HttpErrorDto, MessageResponseDto, throwHttpException } from 'src/core';
@@ -44,8 +49,7 @@ export class AuthController {
   @Post('sign-up')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'User signup.' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
+  @ApiCreatedResponse({
     description: 'Created',
     type: UserResponseDto,
   })
@@ -66,13 +70,11 @@ export class AuthController {
     description: 'OK',
     type: SignInResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
+  @ApiUnauthorizedResponse({
     description: 'Unauthorized',
     type: HttpErrorDto,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Bad Request',
     type: HttpErrorDto,
   })
@@ -84,13 +86,11 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiProperty({ type: CheckEmailDto })
   @ApiOperation({ summary: 'Check for email availability.' })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
     description: 'OK',
     type: MessageResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
+  @ApiConflictResponse({
     description: 'Conflict',
     type: HttpErrorDto,
   })
@@ -111,13 +111,11 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({ type: GenerateOTPDto })
   @ApiOperation({ summary: 'Generate OTP.' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
+  @ApiCreatedResponse({
     description: 'Created',
     type: MessageResponseDto,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Bad Request',
     type: HttpErrorDto,
   })
@@ -130,14 +128,12 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiBody({ type: VerifyOTPDto })
   @ApiOperation({ summary: 'Verify OTP.' })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
     description: 'OK',
     type: MessageResponseDto,
   })
-  @ApiResponse({
+  @ApiUnauthorizedResponse({
     status: HttpStatus.UNAUTHORIZED,
-    description: 'Unauthorized',
     type: HttpErrorDto,
   })
   async validateOTP(@Body() data: VerifyOTPDto): Promise<MessageResponseDto> {

@@ -7,7 +7,14 @@ import {
   Post,
   Res,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Response } from 'express';
 
 import { HttpErrorDto } from 'src/core';
@@ -26,13 +33,12 @@ export class ProductsController {
 
   @Get()
   @ApiOperation({ summary: 'Fetch all prodcuts.' })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
     description: 'OK',
     type: () => Product,
     isArray: true,
   })
-  @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'No Content' })
+  @ApiNoContentResponse({ description: 'No Content' })
   async getProducts(@Res() response: Response): Promise<Response> {
     const RESULT = await this._productsService.getAll();
 
@@ -45,13 +51,11 @@ export class ProductsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new product.' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
+  @ApiCreatedResponse({
     description: 'Created',
     type: () => Product,
   })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+  @ApiBadRequestResponse({
     description: 'Bad Request',
     type: HttpErrorDto,
   })
