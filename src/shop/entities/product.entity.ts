@@ -3,9 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { Category } from './category.entity';
 
 @Entity()
 export class Product {
@@ -45,13 +48,13 @@ export class Product {
   })
   price: number;
 
-  @Column('varchar')
+  @ManyToOne(() => Category)
   @ApiProperty({
     name: 'category',
-    type: Number,
+    type: () => Category,
     description: 'The product generic category',
   })
-  category: string;
+  category: Category;
 
   // @ApiProperty({
   //   name: 'images',
