@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsNumber, IsString, Length, Min } from 'class-validator';
+import { IsInt, IsNumber, IsString, Length, Min } from 'class-validator';
 
 export class CreateProductDto {
   @Type(() => String)
@@ -29,12 +29,12 @@ export class CreateProductDto {
   })
   price: number;
 
-  @Type(() => String)
-  @IsString()
+  @Type(() => Number)
+  @IsInt()
   @ApiProperty({
-    name: 'category',
-    type: String,
-    description: 'The product generic category',
+    name: 'categoryId',
+    type: Number,
+    description: 'The id of the category to be associated to the product',
   })
-  category: string;
+  categoryId: number;
 }

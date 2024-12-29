@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ShopInjectionEnum } from './enums';
-import { Product } from './entities';
+import { Category, Product } from './entities';
 import { ProductsService } from './services/products-service/products.service';
 import { ProductsController } from './controller/products.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product])],
+  imports: [TypeOrmModule.forFeature([Product, Category])],
   controllers: [ProductsController],
   providers: [
     {
