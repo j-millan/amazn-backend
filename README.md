@@ -3,73 +3,111 @@
 Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
 
 ## Project setup
-1. Create PostgreSQL database (Fedora-based distros)
-	*  Install PostgreSQL
-		```bash
-		$ sudo dnf install postgresql postgresql-server
-		$ sudo postgresql-setup --initdb
-		$ sudo systemctl enable postgresql.service && systemctl start postgresql.service
-		```
-	* Create database
-		```bash
-		$ sudo -u postgres createdb amazndb -O postgres --port=$PORT --username=$USERNAME --password
-		```
-		(Enter the password when prompted).
-	
-	* Change the authentication method from `ident` to `trust` in the `pg_hba.conf` file. 
-		```bash
-		$ sudo vim $PATH_TO_PG_HBA_CONF 
-		```
-		```conf
-		# TYPE  DATABASE        USER            ADDRESS                 METHOD
-		# "local" is for Unix domain socket connections only
-		local   all             all                                     peer
-		# IPv4 local connections:
-		host    all             all             127.0.0.1/32            ident <-- change to trust
-		# IPv6 local connections:
-		host    all             all             ::1/128                 ident <-- change to trust
-		# Allow replication connections from localhost, by a user with the
-		# replication privilege.
-		local   replication     all                                     peer
-		host    replication     all             127.0.0.1/32            ident <-- change to trust
-		host    replication     all             ::1/128                	ident <-- change to trust
-		```
-		
-	* Install `uuid-ossp` extension for pgsql:
-		```bash
-		$ sudo dnf install postgresql-contrib
-		$ sudo -u postgres psql -d amazndb
-		amazndb=> CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; 
-		amazndb=> exit
-		$ sudo systemctl restart postgresql.service
-		``` 
-2. Clone the repository:
+
+### Using docker (recommended)
+
+1. Install and configure the docker engine
+	* For Linux, follow [this tutorial](https://docs.docker.com/engine/install/),
+	* for Windows, follow [this one](https://docs.docker.com/desktop/setup/install/windows-install/).
+
+2. Clone the repository
+
 	```bash
 	$ git clone git@github.com:j-millan/amazn-backend.git
 	```
 
-3. Install node packages:
-	```bash
-	$ npm install
-	```
-4. Generate a secret key for JWT generation and a secret key for OTP generation:
+3. Generate a secret key for JWT generation and a secret key for OTP generation:
+
 	```bash
 	$ openssl rand  -hex 32
 	```
-5. Duplicate the `.env.template` file as `.env.local` and replace variable values with the values we used to create our database and the secret keys.
 
-6. Run migrations:
+4. Duplicate the `.env.template` file as `.env` and replace variable values with the the secret keys and the parameters desired for the database.
+
+5. Start the docker container
+
 	```bash
-	$ npm run migration:run
+	$ docker compose up
 	```
 
+### Setting up the project manually
+
+1. Create PostgreSQL database (Fedora-based distros)
+
+   * Install PostgreSQL
+
+     ```bash
+     $ sudo dnf install postgresql postgresql-server
+     $ sudo postgresql-setup --initdb
+     $ sudo systemctl enable postgresql.service && systemctl start postgresql.service
+     ```
+   * Create database
+
+     ```bash
+     $ sudo -u postgres createdb amazndb -O postgres --port=$PORT --username=$USERNAME --password
+     ```
+
+     (Enter the password when prompted).
+   * Change the authentication method from `ident` to `trust` in the `pg_hba.conf` file.
+
+     ```bash
+     $ sudo vim $PATH_TO_PG_HBA_CONF 
+     ```
+
+     ```conf
+     # TYPE  DATABASE        USER            ADDRESS                 METHOD
+     # "local" is for Unix domain socket connections only
+     local   all             all                                     peer
+     # IPv4 local connections:
+     host    all             all             127.0.0.1/32            ident <-- change to trust
+     # IPv6 local connections:
+     host    all             all             ::1/128                 ident <-- change to trust
+     # Allow replication connections from localhost, by a user with the
+     # replication privilege.
+     local   replication     all                                     peer
+     host    replication     all             127.0.0.1/32            ident <-- change to trust
+     host    replication     all             ::1/128                	ident <-- change to trust
+     ```
+   * Install `uuid-ossp` extension for pgsql:
+
+     ```bash
+     $ sudo dnf install postgresql-contrib
+     $ sudo -u postgres psql -d amazndb
+     amazndb=> CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; 
+     amazndb=> exit
+     $ sudo systemctl restart postgresql.service
+     ```
+2. Clone the repository:
+
+   ```bash
+   $ git clone git@github.com:j-millan/amazn-backend.git
+   ```
+3. Install node packages:
+
+   ```bash
+   $ npm install
+   ```
+4. Generate a secret key for JWT generation and a secret key for OTP generation:
+
+   ```bash
+   $ openssl rand  -hex 32
+   ```
+5. Duplicate the `.env.template` file as `.env` and replace variable values with the values you used to create the database and the secret keys.
+
+6. Run migrations:
+
+   ```bash
+   $ npm run migration:run
+   ```
+
 ## Compile and run the project
+
 ```bash
 # development
-$ npm run start
-
-# watch mode
 $ npm run start:dev
+
+# development (using docker)
+$ docker compose up
 ```
 
 ## Run tests
@@ -86,14 +124,16 @@ $ npm run test:cov
 ```
 
 ## Migrations
+
 * Generate migrations based on entities:
-	```bash
-	$ npm run migration:generate
-	``` 
+  ```bash
+  $ npm run migration:generate
+  ```
 * Apply migrations to the database:
-	```bash
-	$ npm run migration:run
-	```
+  ```bash
+  $ npm run migration:run
+  ```
+
 ## Resources
 
 Check out a few resources that may come in handy when working with NestJS:
