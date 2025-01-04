@@ -9,7 +9,7 @@ import { TYPE_ORM_CONFIG } from './core';
 import { MAILER_CONFIG } from './core/config/mailer';
 
 const CONFIG_MODULE = ConfigModule.forRoot({
-  envFilePath: '.env.local',
+  envFilePath: '.env',
   isGlobal: true,
 });
 
