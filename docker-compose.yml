@@ -4,13 +4,29 @@ services:
     container_name: amazn_db
     restart: always
     ports:
-      - "5432:5432"
+      - "$DB_PORT:$DB_PORT"
     environment:
-      - POSTGRES_DB=amazndb
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=$DB_DATABASE
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - PGPORT=$DB_PORT
     volumes:
       - db_data:/var/lib/postgresql/data 
+
+  amazn_api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    container_name: amazn_api
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - amazn_db
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    volumes:
+      - .:/app
 
 volumes:
   db_data:
