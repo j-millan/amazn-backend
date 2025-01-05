@@ -7,30 +7,26 @@ Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
 ### Using docker (recommended)
 
 1. Install and configure the docker engine
-	* For Linux, follow [this tutorial](https://docs.docker.com/engine/install/),
-	* for Windows, follow [this one](https://docs.docker.com/desktop/setup/install/windows-install/).
 
+   * For Linux, follow [this tutorial](https://docs.docker.com/engine/install/),
+   * for Windows, follow [this one](https://docs.docker.com/desktop/setup/install/windows-install/).
 2. Clone the repository
 
-	```bash
-	$ git clone git@github.com:j-millan/amazn-backend.git
-	```
-
+   ```bash
+   $ git clone git@github.com:j-millan/amazn-backend.git
+   ```
 3. Generate a secret key for JWT generation and a secret key for OTP generation:
 
-	```bash
-	$ openssl rand  -hex 32
-	```
-
+   ```bash
+   $ openssl rand  -hex 32
+   ```
 4. Duplicate the `.env.template` file as `.env` and replace variable values with the the secret keys and the parameters desired for the database.
-
 5. Start the docker container
 
-	```bash
-  $ docker compose build
-  $ docker compose up
-	```
-
+   ```bash
+   $ docker compose build
+   $ docker compose up
+   ```
 
 ### Setting up the project manually
 
@@ -95,7 +91,6 @@ Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
    $ openssl rand  -hex 32
    ```
 5. Duplicate the `.env.template` file as `.env` and replace variable values with the values you used to create the database and the secret keys.
-
 6. Run migrations:
 
    ```bash
