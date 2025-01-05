@@ -6,6 +6,10 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN apk add --no-cache dos2unix
+
 COPY . .
 
-CMD [ "npm", "run", "start" ]
+RUN dos2unix startup.sh && chmod +x startup.sh
+
+CMD ["/bin/sh", "./startup.sh"]

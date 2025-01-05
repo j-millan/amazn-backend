@@ -27,8 +27,10 @@ Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
 5. Start the docker container
 
 	```bash
-	$ docker compose up
+  $ docker compose build
+  $ docker compose up
 	```
+
 
 ### Setting up the project manually
 
