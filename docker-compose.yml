@@ -25,8 +25,11 @@ services:
       - amazn_db
     ports:
       - "${APP_PORT}:${APP_PORT}"
-    volumes:
-      - ./src:/app/src
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /app
 
 volumes:
   db_data:

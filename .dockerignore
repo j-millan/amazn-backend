@@ -1,2 +1,14 @@
-node_modules/
-dist/
+# Directories
+node_modules
+dist
+tests
+.git
+
+# Files
+Dockerfile.*
+docker-compose.yml
+README.md
+.eslintrc.js
+.gitignore
+.env.template
+.prettierrc 
