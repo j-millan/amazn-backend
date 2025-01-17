@@ -15,17 +15,17 @@ Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
    ```bash
    $ git clone git@github.com:j-millan/amazn-backend.git
    ```
-3. Generate a secret key for JWT generation and a secret key for OTP generation:
+3. Install node packages:
 
    ```bash
-   $ openssl rand  -hex 32
+   $ npm install
    ```
-4. Duplicate the `.env.template` file as `.env` and replace variable values with the the secret keys and the parameters desired for the database.
+4. Set up the environment (steps further below).
 5. Start the docker container
 
    ```bash
    $ docker compose build
-   $ docker compose up
+   $ docker compose up --watch
    ```
 
 ### Setting up the project manually
@@ -85,17 +85,41 @@ Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
    ```bash
    $ npm install
    ```
-4. Generate a secret key for JWT generation and a secret key for OTP generation:
-
-   ```bash
-   $ openssl rand  -hex 32
-   ```
-5. Duplicate the `.env.template` file as `.env` and replace variable values with the values you used to create the database and the secret keys.
+5. Set up the environment (steps further below).
 6. Run migrations:
 
    ```bash
    $ npm run migration:run
    ```
+
+## Env configuration
+
+The `.env.template` file contains the variables needed to start the app. Copy the file and rename it to `.env` and fill in the values.
+
+### App variables
+`APP_ENV` specifies in which environment the app is running. Use `dev` for local.
+`APP_PORT` the port where the API will accept connections.
+
+### JWT variables
+`JWT_EXPIRES_IN` the expiration time of the auth tokens, in seconds.
+`JWT_SECRET` the secret used to generate the auth tokens. Generate using the next command:
+
+```bash
+$ openssl rand  -hex 32
+```
+### OTP variables
+`OTP_EXPIRES_IN` the expiration time of the OTPs, in milliseconds.
+`OTP_SECRET` the secret used to generate the OTPs. Generate using the next command:
+
+```bash
+$ openssl rand  -hex 32
+```
+
+### Mailer variables
+These are the parameters for the email service (used to send OTPs). Sign up for an email delivery provider (like mailtrap), and use the parameters provided by it. 
+
+### Database variables
+These are the parameters for the postgresql database. If you're setting up the database manually, then you have to fill the variable values with the parameters you used to create the database (using the steps above), if you're setting up the app using Docker, you can fill in the desired values (execpt for `DB_HOST` which has to be `amazn_db`) and the docker compose app will use them to set up the database.
 
 ## Compile and run the project
 
