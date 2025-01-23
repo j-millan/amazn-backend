@@ -1,7 +1,7 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
-export const JWT_CONFIG = JwtModule.registerAsync({
+const JWT_CONFIG = JwtModule.registerAsync({
   imports: [ConfigModule],
   inject: [ConfigService],
   useFactory: (configService) => ({
@@ -12,3 +12,5 @@ export const JWT_CONFIG = JwtModule.registerAsync({
     },
   }),
 });
+
+export default JWT_CONFIG;

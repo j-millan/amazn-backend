@@ -25,6 +25,9 @@
     "migration:revert": "npm run typeorm -- -d ./src/core/config/datasource.ts migration:revert"
   },
   "dependencies": {
+    "@adminjs/express": "^6.1.1",
+    "@adminjs/nestjs": "^6.1.0",
+    "@adminjs/typeorm": "^5.0.1",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
@@ -36,6 +39,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "@types/nodemailer": "^6.4.17",
     "@types/speakeasy": "^2.0.10",
+    "adminjs": "^7.8.15",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",

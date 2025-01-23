@@ -5,8 +5,9 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ShopModule } from './shop/shop.module';
-import { TYPE_ORM_CONFIG } from './core';
-import { MAILER_CONFIG } from './core/config/mailer';
+import TYPE_ORM_CONFIG from './core/config/typeorm';
+import MAILER_CONFIG from './core/config/mailer';
+import ADMINJS_CONFIG from './core/config/adminjs';
 
 const CONFIG_MODULE = ConfigModule.forRoot({
   envFilePath: '.env',
@@ -18,6 +19,7 @@ const CONFIG_MODULE = ConfigModule.forRoot({
     CONFIG_MODULE,
     TYPE_ORM_CONFIG,
     MAILER_CONFIG,
+    ADMINJS_CONFIG,
     ScheduleModule.forRoot(),
     ShopModule,
     AuthModule,

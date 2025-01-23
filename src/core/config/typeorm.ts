@@ -1,7 +1,7 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-export const TYPE_ORM_CONFIG = TypeOrmModule.forRootAsync({
+const TYPE_ORM_CONFIG = TypeOrmModule.forRootAsync({
   imports: [ConfigModule],
   inject: [ConfigService],
   useFactory: (configService) => ({
@@ -17,3 +17,5 @@ export const TYPE_ORM_CONFIG = TypeOrmModule.forRootAsync({
     synchronize: false,
   }),
 });
+
+export default TYPE_ORM_CONFIG;
