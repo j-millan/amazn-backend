@@ -22,10 +22,12 @@ export class Category extends BaseEntity {
   imageUrl: string;
 
   // Parent category will refer to its children as 'children'
-  @ManyToOne(() => Category, (category) => category.children)
-  parent: Category;
+  @ManyToOne(() => Category, (category) => category.children, {
+    nullable: true,
+  })
+  parent?: Category;
 
   // Children categories will refer to their parent as 'parent'
-  @OneToMany(() => Category, (category) => category.parent)
-  children: Category[];
+  @OneToMany(() => Category, (category) => category.parent, { nullable: true })
+  children?: Category[];
 }

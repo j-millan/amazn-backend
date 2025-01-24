@@ -1,6 +1,6 @@
-import { Category } from 'src/shop/entities';
+import { CategoryResponseDto } from 'src/shop/dto';
 
 export interface CategoriesServiceInterface {
-  getAll(): Promise<Category[]>;
-  find(slug?: string, id?: number): Promise<Category>;
+  getAll(): Promise<CategoryResponseDto[]>;
+  find(id: number): Promise<CategoryResponseDto>;
 }

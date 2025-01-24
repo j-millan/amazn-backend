@@ -15,9 +15,9 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { Category } from '../entities';
 import { ShopInjectionEnum } from '../enums';
 import { CategoriesService } from '../services';
+import { CategoryResponseDto } from '../dto';
 
 @Controller('categories')
 @ApiTags('categories')
@@ -31,7 +31,7 @@ export class CategoriesController {
   @ApiOperation({ summary: 'Fetch all categories.' })
   @ApiOkResponse({
     description: 'OK',
-    type: () => Category,
+    type: () => CategoryResponseDto,
     isArray: true,
   })
   @ApiNoContentResponse({ description: 'No Content' })
@@ -49,14 +49,14 @@ export class CategoriesController {
   @ApiOperation({ summary: 'Find category by ID.' })
   @ApiOkResponse({
     description: 'OK',
-    type: () => Category,
+    type: () => CategoryResponseDto,
   })
   @ApiNotFoundResponse({ description: 'No Content' })
   async getCategory(
     @Res() response: Response,
     @Param('id') id: number,
   ): Promise<Response> {
-    const RESULT = await this._categoriesService.find(null, id);
+    const RESULT = await this._categoriesService.find(id);
 
     if (!RESULT) {
       return response.status(HttpStatus.NOT_FOUND).send();

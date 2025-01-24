@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 
 import { CategoriesServiceInterface } from '..';
 import { Category } from '../../entities';
+import { CategoryResponseDto } from 'src/shop/dto';
 
 @Injectable()
 export class CategoriesService implements CategoriesServiceInterface {
@@ -11,21 +12,18 @@ export class CategoriesService implements CategoriesServiceInterface {
     @InjectRepository(Category) private _categoriesRepo: Repository<Category>,
   ) {}
 
-  async getAll(): Promise<Category[]> {
-    return await this._categoriesRepo.find();
+  async getAll(): Promise<CategoryResponseDto[]> {
+    const CATEGORIES = (await this._categoriesRepo.find()).map(
+      (category) => new CategoryResponseDto(category),
+    );
+    return CATEGORIES;
   }
 
-  async find(slug?: string, id?: number): Promise<Category> {
-    if (slug) {
-      return await this._categoriesRepo.findOneOrFail({
-        where: { slug },
-      });
-    }
+  async find(id: number): Promise<CategoryResponseDto> {
+    const CATEGORY = await this._categoriesRepo.findOneOrFail({
+      where: { id },
+    });
 
-    if (id) {
-      return await this._categoriesRepo.findOneOrFail({
-        where: { id },
-      });
-    }
+    return new CategoryResponseDto(CATEGORY);
   }
 }
