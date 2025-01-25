@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Category } from '../entities';
+import { IsInt, IsOptional, IsString, MaxLength } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CategoryResponseDto {
   @ApiProperty({
@@ -25,7 +27,7 @@ export class CategoryResponseDto {
 
   @ApiProperty({
     name: 'imageUrl',
-    description: 'URL to the thumbnail of the category.',
+    description: 'URL of the thumbnail of the category.',
     type: String,
   })
   imageUrl: string;
@@ -65,4 +67,36 @@ export class CategoryResponseDto {
       });
     }
   }
+}
+
+export class CreateCategoryDto {
+  @Type(() => String)
+  @IsString()
+  @MaxLength(100)
+  @ApiProperty({
+    name: 'description',
+    description: "The category's description.",
+    type: String,
+  })
+  description: string;
+
+  @Type(() => String)
+  @IsString()
+  @ApiProperty({
+    name: 'imageUrl',
+    description: 'URL of the thumbnail of the category.',
+    type: String,
+  })
+  imageUrl: string;
+
+  @Type(() => Number)
+  @IsInt()
+  @IsOptional()
+  @ApiProperty({
+    name: 'parentId',
+    description: 'The ID of the parent category.',
+    type: Number,
+    required: false,
+  })
+  parentId?: number;
 }

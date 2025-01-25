@@ -1,12 +1,16 @@
 import {
+  Body,
   Controller,
   Get,
   HttpStatus,
   Inject,
   Param,
+  Post,
   Res,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -16,15 +20,15 @@ import {
 import { Response } from 'express';
 
 import { ShopInjectionEnum } from '../enums';
-import { CategoriesService } from '../services';
-import { CategoryResponseDto } from '../dto';
+import { CategoriesServiceInterface } from '../services';
+import { CategoryResponseDto, CreateCategoryDto } from '../dto';
 
 @Controller('categories')
 @ApiTags('categories')
 export class CategoriesController {
   constructor(
     @Inject(ShopInjectionEnum.CATEGORIES_SERVICE)
-    private _categoriesService: CategoriesService,
+    private _categoriesService: CategoriesServiceInterface,
   ) {}
 
   @Get()
@@ -35,14 +39,17 @@ export class CategoriesController {
     isArray: true,
   })
   @ApiNoContentResponse({ description: 'No Content' })
-  async getCategories(@Res() response: Response): Promise<Response> {
+  async getCategories(
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<CategoryResponseDto[]> {
     const RESULT = await this._categoriesService.getAll();
 
     if (!RESULT.length) {
-      return response.status(HttpStatus.NO_CONTENT).send();
+      response.status(HttpStatus.NO_CONTENT);
+      return;
     }
 
-    response.status(HttpStatus.OK).json(RESULT);
+    return RESULT;
   }
 
   @Get(':id')
@@ -52,16 +59,18 @@ export class CategoriesController {
     type: () => CategoryResponseDto,
   })
   @ApiNotFoundResponse({ description: 'No Content' })
-  async getCategory(
-    @Res() response: Response,
-    @Param('id') id: number,
-  ): Promise<Response> {
+  async getCategory(@Param('id') id: number): Promise<CategoryResponseDto> {
     const RESULT = await this._categoriesService.find(id);
+    return RESULT;
+  }
 
-    if (!RESULT) {
-      return response.status(HttpStatus.NOT_FOUND).send();
-    }
-
-    response.status(HttpStatus.OK).json(RESULT);
+  @Post()
+  @ApiOperation({ summary: 'Create a category.' })
+  @ApiCreatedResponse({ type: CategoryResponseDto })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  async createCategory(
+    @Body() data: CreateCategoryDto,
+  ): Promise<CategoryResponseDto> {
+    return await this._categoriesService.create(data);
   }
 }
