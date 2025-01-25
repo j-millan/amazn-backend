@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 
 import { CategoriesServiceInterface } from '..';
 import { Category } from '../../entities';
@@ -14,9 +14,14 @@ export class CategoriesService implements CategoriesServiceInterface {
   ) {}
 
   async getAll(): Promise<CategoryResponseDto[]> {
-    const CATEGORIES = (await this._categoriesRepo.find()).map(
-      (category) => new CategoryResponseDto(category),
-    );
+    const CATEGORIES = (
+      await this._categoriesRepo.find({
+        where: {
+          parent: IsNull(),
+        },
+        relations: ['children'],
+      })
+    ).map((category) => new CategoryResponseDto(category));
 
     return CATEGORIES;
   }
@@ -25,7 +30,7 @@ export class CategoriesService implements CategoriesServiceInterface {
     try {
       const CATEGORY = await this._categoriesRepo.findOneOrFail({
         where: { id },
-        relations: ['parent'],
+        relations: ['parent', 'children'],
       });
 
       return new CategoryResponseDto(CATEGORY);

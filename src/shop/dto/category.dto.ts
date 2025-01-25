@@ -56,15 +56,13 @@ export class CategoryResponseDto {
     this.imageUrl = category.imageUrl;
 
     if (category.parent) {
-      category.parent.children = null;
       this.parent = new CategoryResponseDto(category.parent);
     }
 
-    if (category.children) {
-      this.children = category.children.map((child) => {
-        child.parent = null;
-        return new CategoryResponseDto(child);
-      });
+    if (category.children?.length) {
+      this.children = category.children.map(
+        (child) => new CategoryResponseDto(child),
+      );
     }
   }
 }
