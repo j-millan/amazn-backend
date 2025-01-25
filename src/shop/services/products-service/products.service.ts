@@ -18,7 +18,7 @@ export class ProductsService implements ProductsServiceInterface {
   async getAll(): Promise<ProductResponseDto[]> {
     return (
       await this._productsRepo.find({
-        relations: ['category'],
+        relations: ['category.parent'],
       })
     ).map((product) => new ProductResponseDto(product));
   }

@@ -66,9 +66,8 @@ export class ProductResponseDto {
     this.createdAt = product.createdAt;
     this.updatedAt = product.updatedAt;
 
-    product.category.parent = null;
     product.category.children = null;
-    this.category = new CategoryResponseDto(product.category);
+    this.category = new CategoryResponseDto(product.category, true);
   }
 }
 

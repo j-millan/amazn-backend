@@ -27,7 +27,7 @@ export class Category extends BaseEntity {
   })
   parent?: Category;
 
-  // Children categories will refer to their parent as 'parent'
+  // Child categories will refer to their parent as 'parent'
   @OneToMany(() => Category, (category) => category.parent, { nullable: true })
   children?: Category[];
 }

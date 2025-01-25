@@ -41,6 +41,14 @@ export class CategoryResponseDto {
   parent?: CategoryResponseDto;
 
   @ApiProperty({
+    name: 'parentId',
+    description: 'The id of the parent category.',
+    type: () => Number,
+    required: false,
+  })
+  parentId?: number;
+
+  @ApiProperty({
     name: 'children',
     description: 'The child categories.',
     type: () => CategoryResponseDto,
@@ -49,14 +57,18 @@ export class CategoryResponseDto {
   })
   children?: CategoryResponseDto[];
 
-  constructor(category: Category) {
+  constructor(category: Category, onlyRelationId: boolean = false) {
     this.id = category.id;
     this.description = category.description;
     this.slug = category.slug;
     this.imageUrl = category.imageUrl;
 
     if (category.parent) {
-      this.parent = new CategoryResponseDto(category.parent);
+      if (!onlyRelationId) {
+        this.parent = new CategoryResponseDto(category.parent);
+      } else {
+        this.parentId = category.parent.id;
+      }
     }
 
     if (category.children?.length) {
