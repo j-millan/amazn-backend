@@ -5,7 +5,7 @@ import slugify from 'slugify';
 
 import { throwHttpException } from 'src/core';
 import { ProductsServiceInterface } from '..';
-import { CreateProductDto } from '../../dto';
+import { CreateProductDto, ProductResponseDto } from '../../dto';
 import { Category, Product } from '../../entities';
 
 @Injectable()
@@ -15,22 +15,24 @@ export class ProductsService implements ProductsServiceInterface {
     @InjectRepository(Category) private _categoriesRepo: Repository<Category>,
   ) {}
 
-  async getAll(): Promise<Product[]> {
-    return await this._productsRepo.find({
-      relations: ['category'],
-    });
+  async getAll(): Promise<ProductResponseDto[]> {
+    return (
+      await this._productsRepo.find({
+        relations: ['category'],
+      })
+    ).map((product) => new ProductResponseDto(product));
   }
 
-  async find(id: number): Promise<Product> {
+  async find(id: number): Promise<ProductResponseDto> {
     const PRODUCT = await this._productsRepo.findOneOrFail({
       where: { id },
       relations: ['category'],
     });
 
-    return PRODUCT;
+    return new ProductResponseDto(PRODUCT);
   }
 
-  async create(data: CreateProductDto): Promise<Product> {
+  async create(data: CreateProductDto): Promise<ProductResponseDto> {
     const CATEGORY = await this._categoriesRepo.findOne({
       where: { id: data.categoryId },
     });
@@ -50,7 +52,7 @@ export class ProductsService implements ProductsServiceInterface {
     );
 
     this._setSlug(PRODUCT);
-    return PRODUCT;
+    return new ProductResponseDto(PRODUCT);
   }
 
   async delete(id: number): Promise<void> {

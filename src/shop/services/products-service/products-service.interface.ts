@@ -1,8 +1,8 @@
-import { Product } from 'src/shop/entities';
+import { ProductResponseDto } from 'src/shop/dto';
 
 export interface ProductsServiceInterface {
-  getAll(): Promise<Product[]>;
-  find(id: number): Promise<Product>;
-  create(data: any): Promise<Product>;
+  getAll(): Promise<ProductResponseDto[]>;
+  find(id: number): Promise<ProductResponseDto>;
+  create(data: any): Promise<ProductResponseDto>;
   delete(id: number): Promise<void>;
 }

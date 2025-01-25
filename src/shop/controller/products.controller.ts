@@ -20,10 +20,9 @@ import {
 import { Response } from 'express';
 
 import { HttpErrorDto } from 'src/core';
-import { ProductsService } from '../services/products-service/products.service';
-import { Product } from '../entities';
 import { ShopInjectionEnum } from '../enums';
-import { CreateProductDto } from '../dto';
+import { ProductsService } from '../services';
+import { CreateProductDto, ProductResponseDto } from '../dto';
 
 @Controller('products')
 @ApiTags('products')
@@ -37,13 +36,13 @@ export class ProductsController {
   @ApiOperation({ summary: 'Fetch all prodcuts.' })
   @ApiOkResponse({
     description: 'OK',
-    type: () => Product,
+    type: () => ProductResponseDto,
     isArray: true,
   })
   @ApiNoContentResponse({ description: 'No Content' })
   async getProducts(
     @Res({ passthrough: true }) response: Response,
-  ): Promise<Product[]> {
+  ): Promise<ProductResponseDto[]> {
     const RESULT = await this._productsService.getAll();
 
     if (!RESULT.length) {
@@ -58,10 +57,10 @@ export class ProductsController {
   @ApiOperation({ summary: 'Fetch a product by its id.' })
   @ApiOkResponse({
     description: 'OK',
-    type: () => Product,
+    type: () => ProductResponseDto,
   })
   @ApiNotFoundResponse({ description: 'Not Found' })
-  async getProduct(@Param('id') id: number): Promise<Product> {
+  async getProduct(@Param('id') id: number): Promise<ProductResponseDto> {
     return await this._productsService.find(id);
   }
 
@@ -69,13 +68,15 @@ export class ProductsController {
   @ApiOperation({ summary: 'Create a new product.' })
   @ApiCreatedResponse({
     description: 'Created',
-    type: () => Product,
+    type: () => ProductResponseDto,
   })
   @ApiBadRequestResponse({
     description: 'Bad Request',
     type: HttpErrorDto,
   })
-  async createProduct(@Body() data: CreateProductDto): Promise<Product> {
+  async createProduct(
+    @Body() data: CreateProductDto,
+  ): Promise<ProductResponseDto> {
     return await this._productsService.create(data);
   }
 }
