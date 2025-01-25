@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import {
   BaseEntity,
   Column,
@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 
 import { Category } from './category.entity';
+import { CategoryResponseDto } from '../dto';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -52,10 +53,10 @@ export class Product extends BaseEntity {
   @ManyToOne(() => Category)
   @ApiProperty({
     name: 'category',
-    type: () => Category,
+    type: () => OmitType(CategoryResponseDto, ['parent', 'children']),
     description: 'The product generic category',
   })
-  category: Category;
+  category: CategoryResponseDto;
 
   // @ApiProperty({
   //   name: 'images',

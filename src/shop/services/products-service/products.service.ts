@@ -16,12 +16,15 @@ export class ProductsService implements ProductsServiceInterface {
   ) {}
 
   async getAll(): Promise<Product[]> {
-    return await this._productsRepo.find();
+    return await this._productsRepo.find({
+      relations: ['category'],
+    });
   }
 
   async find(id: number): Promise<Product> {
     const PRODUCT = await this._productsRepo.findOneOrFail({
       where: { id },
+      relations: ['category'],
     });
 
     return PRODUCT;
