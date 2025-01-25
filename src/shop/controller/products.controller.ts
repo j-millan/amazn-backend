@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Inject,
+  Param,
   Post,
   Res,
 } from '@nestjs/common';
@@ -11,6 +12,7 @@ import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiNoContentResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -39,14 +41,28 @@ export class ProductsController {
     isArray: true,
   })
   @ApiNoContentResponse({ description: 'No Content' })
-  async getProducts(@Res() response: Response): Promise<Response> {
+  async getProducts(
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<Product[]> {
     const RESULT = await this._productsService.getAll();
 
     if (!RESULT.length) {
-      return response.status(HttpStatus.NO_CONTENT).send();
+      response.status(HttpStatus.NO_CONTENT);
+      return;
     }
 
-    response.status(HttpStatus.OK).json(RESULT);
+    return RESULT;
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Fetch a product by its id.' })
+  @ApiOkResponse({
+    description: 'OK',
+    type: () => Product,
+  })
+  @ApiNotFoundResponse({ description: 'Not Found' })
+  async getProduct(@Param('id') id: number): Promise<Product> {
+    return await this._productsService.find(id);
   }
 
   @Post()

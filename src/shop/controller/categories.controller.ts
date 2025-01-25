@@ -53,7 +53,7 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Find category by ID.' })
+  @ApiOperation({ summary: 'Fetch a category by its id.' })
   @ApiOkResponse({
     description: 'OK',
     type: () => CategoryResponseDto,
