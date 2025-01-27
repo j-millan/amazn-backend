@@ -1,40 +1,55 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsInt, IsNumber, IsString, Length, Min } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import {
+  IsBoolean,
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Length,
+  Min,
+} from 'class-validator';
 import { CategoryResponseDto } from './category.dto';
 import { Product } from '../entities';
 
 export class ProductResponseDto {
-  @ApiProperty({ name: 'id', type: Number, description: 'The product id' })
+  @ApiProperty({ name: 'id', type: Number, description: "The product's id." })
   id: number;
 
   @ApiProperty({
     name: 'slug',
     type: String,
-    description: 'Slug for identification.',
+    description: 'User-friendly identifier for the product.',
   })
   slug: string;
 
   @ApiProperty({
     name: 'name',
     type: String,
-    description: 'The product name',
+    description: "The product's name.",
   })
   name: string;
 
   @ApiProperty({
     name: 'description',
     type: String,
-    description: 'The product description',
+    description: "The product's description.",
   })
   description: string;
 
   @ApiProperty({
     name: 'price',
     type: Number,
-    description: 'The product price, in U$D',
+    description: "The product's price, in U$D.",
   })
   price: number;
+
+  @ApiProperty({
+    name: 'stock',
+    type: Boolean,
+    description: 'Indicates wether the product is in stock.',
+  })
+  stock: boolean;
 
   @ApiProperty({
     name: 'category',
@@ -63,6 +78,7 @@ export class ProductResponseDto {
     this.name = product.name;
     this.description = product.description;
     this.price = product.price;
+    this.stock = product.stock >= 1;
     this.createdAt = product.createdAt;
     this.updatedAt = product.updatedAt;
 
@@ -106,4 +122,17 @@ export class CreateProductDto {
     description: 'The id of the category to be associated to the product',
   })
   categoryId: number;
+}
+
+export class ProductParamsDto {
+  @Transform(({ value }) => value === 'true')
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({
+    name: 'stock',
+    description: 'Wether the product should be in stock or not.',
+    type: Boolean,
+    required: false,
+  })
+  stock?: boolean;
 }

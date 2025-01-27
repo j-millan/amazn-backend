@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   Post,
+  Query,
   Res,
 } from '@nestjs/common';
 import {
@@ -21,15 +22,15 @@ import { Response } from 'express';
 
 import { HttpErrorDto } from 'src/core';
 import { ShopInjectionEnum } from '../enums';
-import { ProductsService } from '../services';
-import { CreateProductDto, ProductResponseDto } from '../dto';
+import { ProductsServiceInterface } from '../services';
+import { CreateProductDto, ProductParamsDto, ProductResponseDto } from '../dto';
 
 @Controller('products')
 @ApiTags('products')
 export class ProductsController {
   constructor(
     @Inject(ShopInjectionEnum.PRODUCTS_SERVICE)
-    private _productsService: ProductsService,
+    private _productsService: ProductsServiceInterface,
   ) {}
 
   @Get()
@@ -42,8 +43,9 @@ export class ProductsController {
   @ApiNoContentResponse({ description: 'No Content' })
   async getProducts(
     @Res({ passthrough: true }) response: Response,
+    @Query() queryParams: ProductParamsDto,
   ): Promise<ProductResponseDto[]> {
-    const RESULT = await this._productsService.getAll();
+    const RESULT = await this._productsService.getAll(queryParams);
 
     if (!RESULT.length) {
       response.status(HttpStatus.NO_CONTENT);

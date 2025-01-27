@@ -1,11 +1,15 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThanOrEqual, Repository } from 'typeorm';
 import slugify from 'slugify';
 
 import { throwHttpException } from 'src/core';
 import { ProductsServiceInterface } from '..';
-import { CreateProductDto, ProductResponseDto } from '../../dto';
+import {
+  CreateProductDto,
+  ProductParamsDto,
+  ProductResponseDto,
+} from '../../dto';
 import { Category, Product } from '../../entities';
 
 @Injectable()
@@ -15,9 +19,14 @@ export class ProductsService implements ProductsServiceInterface {
     @InjectRepository(Category) private _categoriesRepo: Repository<Category>,
   ) {}
 
-  async getAll(): Promise<ProductResponseDto[]> {
+  async getAll(queryParams: ProductParamsDto): Promise<ProductResponseDto[]> {
+    const STOCK = queryParams?.stock === true ? 1 : 0;
+
     return (
       await this._productsRepo.find({
+        where: {
+          stock: MoreThanOrEqual(STOCK),
+        },
         relations: ['category.parent'],
       })
     ).map((product) => new ProductResponseDto(product));
