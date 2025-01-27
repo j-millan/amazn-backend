@@ -27,6 +27,9 @@ export class Product extends BaseEntity {
   @Column('float')
   price: number;
 
+  @Column('integer', { default: 1 })
+  stock: number;
+
   @ManyToOne(() => Category)
   category: Category;
 
