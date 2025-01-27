@@ -149,4 +149,16 @@ export class ProductParamsDto {
     required: false,
   })
   stock?: boolean;
+
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @IsOptional()
+  @ApiProperty({
+    name: 'category',
+    description: 'The id of the related category.',
+    type: Number,
+    required: false,
+  })
+  category?: number;
 }

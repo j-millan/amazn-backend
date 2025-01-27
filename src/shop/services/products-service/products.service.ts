@@ -26,6 +26,7 @@ export class ProductsService implements ProductsServiceInterface {
       await this._productsRepo.find({
         where: {
           stock: MoreThanOrEqual(STOCK),
+          category: { id: queryParams?.category },
         },
         relations: ['category.parent'],
       })
