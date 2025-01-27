@@ -91,7 +91,11 @@ export class CreateProductDto {
   @Type(() => String)
   @IsString()
   @Length(10, 100)
-  @ApiProperty({ name: 'name', type: String, description: 'The product name' })
+  @ApiProperty({
+    name: 'name',
+    type: String,
+    description: "The product's name.",
+  })
   name: string;
 
   @Type(() => String)
@@ -100,7 +104,7 @@ export class CreateProductDto {
   @ApiProperty({
     name: 'description',
     type: String,
-    description: 'The product description',
+    description: "The product's description.",
   })
   description: string;
 
@@ -110,16 +114,26 @@ export class CreateProductDto {
   @ApiProperty({
     name: 'price',
     type: Number,
-    description: 'The product price, in U$D',
+    description: "The product's price, in U$D.",
   })
   price: number;
+
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @ApiProperty({
+    name: 'stock',
+    type: Number,
+    description: 'The number of products in stock.',
+  })
+  stock: number;
 
   @Type(() => Number)
   @IsInt()
   @ApiProperty({
     name: 'categoryId',
     type: Number,
-    description: 'The id of the category to be associated to the product',
+    description: 'The id of the category to be associated to the product.',
   })
   categoryId: number;
 }
