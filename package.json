@@ -20,9 +20,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "dotenv -f .env.local npx typeorm-ts-node-commonjs",
     "migration:run": "npm run typeorm -- migration:run -- -d ./src/core/config/datasource.ts",
-    "migration:generate": "npm run typeorm -- -d ./src/core/config/datasource.ts migration:generate ./src/migrations/migration",
+    "migration:generate": "npm run typeorm -- migration:generate -- -d ./src/core/config/datasource.ts ./src/migrations/migration",
     "migration:create": "npm run typeorm -- migration:create ./src/migrations",
-    "migration:revert": "npm run typeorm -- -d ./src/core/config/datasource.ts migration:revert"
+    "migration:revert": "npm run typeorm -- migration:revert -- -d ./src/core/config/datasource.ts"
   },
   "dependencies": {
     "@adminjs/express": "^6.1.1",

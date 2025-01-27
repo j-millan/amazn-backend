@@ -146,6 +146,22 @@ $ npm run test:cov
 
 ## Migrations
 
+### With Docker
+* Generate migrations based on entities:
+  ```bash
+  $ docker exec CONTAINER_ID npm run migration:generate
+  ```
+* Apply migrations to the database:
+  ```bash
+  $ docker exec CONTAINER_ID npm run migration:run
+  ```
+
+You can get the container ID with the following command:
+```bash
+$ docker ps
+```
+
+### Without Docker
 * Generate migrations based on entities:
   ```bash
   $ npm run migration:generate
