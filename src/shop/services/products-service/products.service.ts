@@ -70,8 +70,7 @@ export class ProductsService implements ProductsServiceInterface {
   }
 
   private _setSlug(product: Product): void {
-    product.slug =
-      slugify(product.name, { lower: true }) + '-' + product.id.toString();
+    product.slug = slugify(product.name, { lower: true });
     this._productsRepo.update(product.id, product);
   }
 }

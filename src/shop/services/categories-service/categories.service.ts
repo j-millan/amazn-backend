@@ -52,7 +52,7 @@ export class CategoriesService implements CategoriesServiceInterface {
       where: { id: parentId },
     });
 
-    if (!PARENT) {
+    if (parentId && !PARENT) {
       throwHttpException(
         HttpStatus.BAD_REQUEST,
         `the category with id ${parentId} does not exist`,
@@ -68,5 +68,15 @@ export class CategoriesService implements CategoriesServiceInterface {
     );
 
     return CATEGORY;
+  }
+
+  async init(categories: any[], parentId?: number): Promise<void> {
+    categories.forEach(async ({ description, imageUrl, subcategories }) => {
+      const { id } = await this.create({ description, imageUrl, parentId });
+
+      if (subcategories?.length) {
+        this.init(subcategories, id);
+      }
+    });
   }
 }

@@ -4,4 +4,5 @@ export interface CategoriesServiceInterface {
   getAll(): Promise<CategoryResponseDto[]>;
   find(id: number): Promise<CategoryResponseDto>;
   create(data: CreateCategoryDto): Promise<CategoryResponseDto>;
+  init(categories: any[], parentId?: number): Promise<void>;
 }

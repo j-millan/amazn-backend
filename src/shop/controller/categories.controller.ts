@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Get,
   HttpStatus,
@@ -9,7 +8,6 @@ import {
   Res,
 } from '@nestjs/common';
 import {
-  ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -21,7 +19,8 @@ import { Response } from 'express';
 
 import { ShopInjectionEnum } from '../enums';
 import { CategoriesServiceInterface } from '../services';
-import { CategoryResponseDto, CreateCategoryDto } from '../dto';
+import { CategoryResponseDto } from '../dto';
+import { CATEGORIES } from '../data/categories';
 
 @Controller('categories')
 @ApiTags('categories')
@@ -64,13 +63,10 @@ export class CategoriesController {
     return RESULT;
   }
 
-  @Post()
-  @ApiOperation({ summary: 'Create a category.' })
-  @ApiCreatedResponse({ type: CategoryResponseDto })
-  @ApiBadRequestResponse({ description: 'Bad Request' })
-  async createCategory(
-    @Body() data: CreateCategoryDto,
-  ): Promise<CategoryResponseDto> {
-    return await this._categoriesService.create(data);
+  @Post('init')
+  @ApiOperation({ summary: 'Initialize categories.' })
+  @ApiCreatedResponse({ description: 'Created' })
+  async initCategories(): Promise<void> {
+    return await this._categoriesService.init(CATEGORIES);
   }
 }
