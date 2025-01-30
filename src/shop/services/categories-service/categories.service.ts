@@ -1,11 +1,12 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Repository } from 'typeorm';
+import { Equal, IsNull, Repository } from 'typeorm';
+import slugify from 'slugify';
 
-import { CategoriesServiceInterface } from '..';
-import { Category } from '../../entities';
-import { CategoryResponseDto, CreateCategoryDto } from 'src/shop/dto';
 import { throwHttpException } from 'src/core';
+import { Category } from '../../entities';
+import { CategoriesServiceInterface } from '..';
+import { CategoryResponseDto, CreateCategoryDto } from '../../dto';
 
 @Injectable()
 export class CategoriesService implements CategoriesServiceInterface {
@@ -49,7 +50,7 @@ export class CategoriesService implements CategoriesServiceInterface {
     parentId,
   }: CreateCategoryDto): Promise<CategoryResponseDto> {
     const PARENT = await this._categoriesRepo.findOne({
-      where: { id: parentId },
+      where: { id: Equal(parentId) },
     });
 
     if (parentId && !PARENT) {
@@ -59,10 +60,13 @@ export class CategoriesService implements CategoriesServiceInterface {
       );
     }
 
+    const SLUG = slugify(description, { lower: true });
+
     const CATEGORY = await this._categoriesRepo.save(
       this._categoriesRepo.create({
         description,
         imageUrl,
+        slug: SLUG,
         parent: PARENT,
       }),
     );
@@ -71,12 +75,13 @@ export class CategoriesService implements CategoriesServiceInterface {
   }
 
   async init(categories: any[], parentId?: number): Promise<void> {
-    categories.forEach(async ({ description, imageUrl, subcategories }) => {
+    for (let i = 0; i < categories.length; i++) {
+      const { description, imageUrl, subcategories } = categories[i];
       const { id } = await this.create({ description, imageUrl, parentId });
 
       if (subcategories?.length) {
-        this.init(subcategories, id);
+        await this.init(subcategories, id);
       }
-    });
+    }
   }
 }
