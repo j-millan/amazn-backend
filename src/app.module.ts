@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
@@ -20,6 +22,10 @@ const CONFIG_MODULE = ConfigModule.forRoot({
     TYPE_ORM_CONFIG,
     MAILER_CONFIG,
     ADMINJS_CONFIG,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      renderPath: '/static',
+    }),
     ScheduleModule.forRoot(),
     ShopModule,
     AuthModule,
