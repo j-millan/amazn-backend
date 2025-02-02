@@ -6,10 +6,12 @@ import {
   INestApplication,
   ValidationPipe,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const APP = await NestFactory.create(AppModule);
-  const PORT = process.env.APP_PORT || 3001;
+  const CONFIG_SERVICE = APP.get(ConfigService);
+  const PORT = CONFIG_SERVICE.get('APP_PORT') || 3001;
 
   APP.enableCors({ origin: 'http://localhost:3000' });
   registerGlobals(APP);

@@ -27,7 +27,6 @@ services:
       - "$APP_PORT:$APP_PORT"
     volumes:
       - ./src:/app/src
-      - ./public:/app/public
       - /app/node_modules
 
 volumes:
