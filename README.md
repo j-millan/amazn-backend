@@ -36,6 +36,8 @@ The `.env.template` file contains the variables needed to start the app. Copy th
 
 `APP_ENV` specifies in which environment the app is running. Use `dev` for local.
 `APP_PORT` the port where the app will accept connections.
+`APP_DOMAIN` the domain where the app is running. Use `http://localhost` for local.
+`APP_STATIC_PATH` the path where static files will be served. Example: `/static/`.
 
 ### JWT variables
 
