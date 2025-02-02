@@ -57,11 +57,15 @@ export class CategoryResponseDto {
   })
   children?: CategoryResponseDto[];
 
-  constructor(category: Category, onlyRelationId: boolean = false) {
+  constructor(
+    category: Category,
+    domain?: string,
+    onlyRelationId: boolean = false,
+  ) {
     this.id = category.id;
     this.description = category.description;
     this.slug = category.slug;
-    this.imageUrl = category.imageUrl;
+    this.imageUrl = `${domain}${category.imageUrl}`;
 
     if (category.parent) {
       if (!onlyRelationId) {
@@ -73,7 +77,7 @@ export class CategoryResponseDto {
 
     if (category.children?.length) {
       this.children = category.children.map(
-        (child) => new CategoryResponseDto(child),
+        (child) => new CategoryResponseDto(child, domain),
       );
     }
   }

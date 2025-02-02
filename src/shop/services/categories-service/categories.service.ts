@@ -7,11 +7,13 @@ import { throwHttpException } from 'src/core';
 import { Category } from '../../entities';
 import { CategoriesServiceInterface } from '..';
 import { CategoryResponseDto, CreateCategoryDto } from '../../dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CategoriesService implements CategoriesServiceInterface {
   constructor(
     @InjectRepository(Category) private _categoriesRepo: Repository<Category>,
+    private _configService: ConfigService,
   ) {}
 
   async getAll(): Promise<CategoryResponseDto[]> {
@@ -22,7 +24,9 @@ export class CategoriesService implements CategoriesServiceInterface {
         },
         relations: ['children'],
       })
-    ).map((category) => new CategoryResponseDto(category));
+    ).map(
+      (category) => new CategoryResponseDto(category, this._getImageBaseUrl()),
+    );
 
     return CATEGORIES;
   }
@@ -34,7 +38,7 @@ export class CategoriesService implements CategoriesServiceInterface {
         relations: ['parent', 'children'],
       });
 
-      return new CategoryResponseDto(CATEGORY);
+      return new CategoryResponseDto(CATEGORY, this._getImageBaseUrl());
     } catch (error) {
       console.debug(error);
       throwHttpException(
@@ -83,5 +87,13 @@ export class CategoriesService implements CategoriesServiceInterface {
         await this.init(subcategories, id);
       }
     }
+  }
+
+  private _getImageBaseUrl(): string {
+    const DOMAIN = this._configService.get('APP_DOMAIN');
+    const PORT = this._configService.get('APP_PORT');
+    const STATIC_PATH = this._configService.get('APP_STATIC_PATH');
+
+    return `${DOMAIN}:${PORT}${STATIC_PATH}`;
   }
 }

@@ -83,7 +83,7 @@ export class ProductResponseDto {
     this.updatedAt = product.updatedAt;
 
     product.category.children = null;
-    this.category = new CategoryResponseDto(product.category, true);
+    this.category = new CategoryResponseDto(product.category, null, true);
   }
 }
 
