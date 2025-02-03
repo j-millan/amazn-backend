@@ -9,6 +9,7 @@ import {
   CreateProductDto,
   ProductParamsDto,
   ProductResponseDto,
+  ProductsResponseDto,
 } from '../../dto';
 import { Category, Product } from '../../entities';
 
@@ -19,18 +20,28 @@ export class ProductsService implements ProductsServiceInterface {
     @InjectRepository(Category) private _categoriesRepo: Repository<Category>,
   ) {}
 
-  async getAll(queryParams: ProductParamsDto): Promise<ProductResponseDto[]> {
-    const STOCK = queryParams?.stock === true ? 1 : 0;
+  async getAll(params: ProductParamsDto): Promise<ProductsResponseDto> {
+    const STOCK = params?.stock === true ? 1 : 0;
+    const SKIP = (params.pageNumber - 1) * params.pageSize;
 
-    return (
+    const RESULTS = (
       await this._productsRepo.find({
         where: {
           stock: MoreThanOrEqual(STOCK),
-          category: { id: queryParams?.category },
+          category: { id: params?.category },
         },
+        take: params.pageSize,
+        skip: SKIP,
         relations: ['category.parent'],
       })
     ).map((product) => new ProductResponseDto(product));
+
+    return new ProductsResponseDto(
+      RESULTS,
+      100,
+      params.pageSize,
+      params.pageNumber,
+    );
   }
 
   async find(id: number): Promise<ProductResponseDto> {

@@ -11,6 +11,7 @@ import {
 } from 'class-validator';
 import { CategoryResponseDto } from './category.dto';
 import { Product } from '../entities';
+import { PaginatedResponseDto, PaginationParamsDto } from 'src/core';
 
 export class ProductResponseDto {
   @ApiProperty({ name: 'id', type: Number, description: "The product's id." })
@@ -87,6 +88,26 @@ export class ProductResponseDto {
   }
 }
 
+export class ProductsResponseDto extends PaginatedResponseDto {
+  @ApiProperty({
+    name: 'results',
+    description: 'The paginated products.',
+    type: () => ProductResponseDto,
+    isArray: true,
+  })
+  results: ProductResponseDto[];
+
+  constructor(
+    results: ProductResponseDto[],
+    totalResults: number,
+    pageSize: number,
+    currentPage: number,
+  ) {
+    super(totalResults, pageSize, currentPage);
+    this.results = results;
+  }
+}
+
 export class CreateProductDto {
   @Type(() => String)
   @IsString()
@@ -138,7 +159,7 @@ export class CreateProductDto {
   categoryId: number;
 }
 
-export class ProductParamsDto {
+export class ProductParamsDto extends PaginationParamsDto {
   @Transform(({ value }) => value === 'true')
   @IsBoolean()
   @IsOptional()

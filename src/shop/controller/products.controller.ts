@@ -23,7 +23,12 @@ import { Response } from 'express';
 import { HttpErrorDto } from 'src/core';
 import { ShopInjectionEnum } from '../enums';
 import { ProductsServiceInterface } from '../services';
-import { CreateProductDto, ProductParamsDto, ProductResponseDto } from '../dto';
+import {
+  CreateProductDto,
+  ProductParamsDto,
+  ProductResponseDto,
+  ProductsResponseDto,
+} from '../dto';
 
 @Controller('products')
 @ApiTags('products')
@@ -37,17 +42,16 @@ export class ProductsController {
   @ApiOperation({ summary: 'Fetch all prodcuts.' })
   @ApiOkResponse({
     description: 'OK',
-    type: () => ProductResponseDto,
-    isArray: true,
+    type: () => ProductsResponseDto,
   })
   @ApiNoContentResponse({ description: 'No Content' })
   async getProducts(
     @Res({ passthrough: true }) response: Response,
     @Query() queryParams: ProductParamsDto,
-  ): Promise<ProductResponseDto[]> {
+  ): Promise<ProductsResponseDto> {
     const RESULT = await this._productsService.getAll(queryParams);
 
-    if (!RESULT.length) {
+    if (!RESULT.results?.length) {
       response.status(HttpStatus.NO_CONTENT);
       return;
     }

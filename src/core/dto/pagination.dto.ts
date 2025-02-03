@@ -26,16 +26,9 @@ export class PaginationParamsDto {
   pageNumber: number;
 }
 
-export class PaginatedResponse<ResponseType> {
+export class PaginatedResponseDto {
   @ApiProperty({
-    name: 'results',
-    description: 'The paginated results.',
-    type: () => Array<ResponseType>,
-  })
-  results: ResponseType[];
-
-  @ApiProperty({
-    name: 'Total',
+    name: 'total',
     description: 'The total number of results.',
     type: Number,
   })
@@ -76,14 +69,7 @@ export class PaginatedResponse<ResponseType> {
   })
   totalPages: number;
 
-  constructor(
-    results: ResponseType[],
-    totalResults: number,
-    pageSize: number,
-    currentPage: number,
-  ) {
-    this.results = results;
-
+  constructor(totalResults: number, pageSize: number, currentPage: number) {
     this.totalResults = totalResults;
     this.pageSize = pageSize;
     this.currentPage = currentPage;
