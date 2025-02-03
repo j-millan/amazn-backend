@@ -7,7 +7,6 @@ import { AuthModule } from './auth/auth.module';
 import { ShopModule } from './shop/shop.module';
 import {
   ADMINJS_CONFIG,
-  JWT_CONFIG,
   MAILER_CONFIG,
   SERVE_STATIC_MODULE,
   TYPE_ORM_CONFIG,
@@ -25,7 +24,6 @@ const CONFIG_MODULE = ConfigModule.forRoot({
     TYPE_ORM_CONFIG,
     MAILER_CONFIG,
     ADMINJS_CONFIG,
-    JWT_CONFIG,
     ScheduleModule.forRoot(),
     ShopModule,
     AuthModule,
