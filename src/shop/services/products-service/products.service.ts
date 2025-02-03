@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MoreThanOrEqual, Repository } from 'typeorm';
+import { FindOptionsWhere, MoreThanOrEqual, Repository } from 'typeorm';
 import slugify from 'slugify';
 
 import { throwHttpException } from 'src/core';
@@ -22,13 +22,15 @@ export class ProductsService implements ProductsServiceInterface {
 
   async getAll(params: ProductParamsDto): Promise<ProductsResponseDto> {
     const STOCK = params?.stock === true ? 1 : 0;
+    const WHERE: FindOptionsWhere<Product> = {
+      stock: MoreThanOrEqual(STOCK),
+      category: { id: params?.category },
+    };
 
+    const TOTAL_COUNT = await this._productsRepo.count({ where: WHERE });
     const RESULTS = (
       await this._productsRepo.find({
-        where: {
-          stock: MoreThanOrEqual(STOCK),
-          category: { id: params?.category },
-        },
+        where: WHERE,
         relations: ['category.parent'],
         take: params.pageSize,
         skip: params.pageNumber,
@@ -37,7 +39,7 @@ export class ProductsService implements ProductsServiceInterface {
 
     return new ProductsResponseDto(
       RESULTS,
-      100,
+      TOTAL_COUNT,
       params.pageSize,
       params.pageNumber,
     );
