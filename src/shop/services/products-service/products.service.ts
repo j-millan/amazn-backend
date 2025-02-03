@@ -22,7 +22,6 @@ export class ProductsService implements ProductsServiceInterface {
 
   async getAll(params: ProductParamsDto): Promise<ProductsResponseDto> {
     const STOCK = params?.stock === true ? 1 : 0;
-    const SKIP = (params.pageNumber - 1) * params.pageSize;
 
     const RESULTS = (
       await this._productsRepo.find({
@@ -30,9 +29,9 @@ export class ProductsService implements ProductsServiceInterface {
           stock: MoreThanOrEqual(STOCK),
           category: { id: params?.category },
         },
-        take: params.pageSize,
-        skip: SKIP,
         relations: ['category.parent'],
+        take: params.pageSize,
+        skip: params.pageNumber,
       })
     ).map((product) => new ProductResponseDto(product));
 

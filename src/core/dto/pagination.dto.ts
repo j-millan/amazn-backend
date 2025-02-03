@@ -12,7 +12,7 @@ export class PaginationParamsDto {
     type: Number,
     required: false,
   })
-  pageSize: number;
+  pageSize?: number;
 
   @Type(() => Number)
   @IsNumber()
@@ -23,7 +23,7 @@ export class PaginationParamsDto {
     type: Number,
     required: false,
   })
-  pageNumber: number;
+  pageNumber?: number;
 }
 
 export class PaginatedResponseDto {
