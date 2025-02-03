@@ -1,0 +1,94 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsNumber, IsOptional } from 'class-validator';
+
+export class PaginationParamsDto {
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  @ApiProperty({
+    name: 'pageSize',
+    description: 'The number of results per page.',
+    type: Number,
+    required: false,
+  })
+  pageSize: number;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  @ApiProperty({
+    name: 'pageNumber',
+    description: 'The page number.',
+    type: Number,
+    required: false,
+  })
+  pageNumber: number;
+}
+
+export class PaginatedResponse<ResponseType> {
+  @ApiProperty({
+    name: 'results',
+    description: 'The paginated results.',
+    type: () => Array<ResponseType>,
+  })
+  results: ResponseType[];
+
+  @ApiProperty({
+    name: 'Total',
+    description: 'The total number of results.',
+    type: Number,
+  })
+  totalResults: number;
+
+  @ApiProperty({
+    name: 'pageSize',
+    description: 'The number of results per page.',
+    type: Number,
+  })
+  pageSize: number;
+
+  @ApiProperty({
+    name: 'currentPage',
+    description: 'The current page.',
+    type: Number,
+  })
+  currentPage: number;
+
+  @ApiProperty({
+    name: 'previousPage',
+    description: 'The previous page.',
+    type: Number,
+  })
+  previousPage: number;
+
+  @ApiProperty({
+    name: 'nextPage',
+    description: 'The next page.',
+    type: Number,
+  })
+  nextPage: number;
+
+  @ApiProperty({
+    name: 'totalPages',
+    description: 'The total number of pages.',
+    type: Number,
+  })
+  totalPages: number;
+
+  constructor(
+    results: ResponseType[],
+    totalResults: number,
+    pageSize: number,
+    currentPage: number,
+  ) {
+    this.results = results;
+
+    this.totalResults = totalResults;
+    this.pageSize = pageSize;
+    this.currentPage = currentPage;
+    this.previousPage = currentPage === 1 ? null : currentPage++;
+    this.totalPages = Math.round(totalResults / pageSize);
+    this.nextPage = currentPage === this.totalPages ? null : currentPage++;
+  }
+}
