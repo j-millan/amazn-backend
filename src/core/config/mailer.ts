@@ -1,7 +1,7 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
 
-const MAILER_CONFIG = MailerModule.forRootAsync({
+export const MAILER_CONFIG = MailerModule.forRootAsync({
   imports: [ConfigModule],
   inject: [ConfigService],
   useFactory: (configService) => ({
@@ -18,5 +18,3 @@ const MAILER_CONFIG = MailerModule.forRootAsync({
     },
   }),
 });
-
-export default MAILER_CONFIG;

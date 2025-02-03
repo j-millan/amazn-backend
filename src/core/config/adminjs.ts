@@ -13,19 +13,18 @@ async function registerAdapter(): Promise<void> {
   });
 }
 
-const ADMINJS_CONFIG = import('@adminjs/nestjs').then(({ AdminModule }) =>
-  AdminModule.createAdminAsync({
-    useFactory: async () => {
-      await registerAdapter();
+export const ADMINJS_CONFIG = import('@adminjs/nestjs').then(
+  ({ AdminModule }) =>
+    AdminModule.createAdminAsync({
+      useFactory: async () => {
+        await registerAdapter();
 
-      return {
-        adminJsOptions: {
-          resources: [User, Category, Product],
-          rootPath: '/admin',
-        },
-      };
-    },
-  }),
+        return {
+          adminJsOptions: {
+            resources: [User, Category, Product],
+            rootPath: '/admin',
+          },
+        };
+      },
+    }),
 );
-
-export default ADMINJS_CONFIG;

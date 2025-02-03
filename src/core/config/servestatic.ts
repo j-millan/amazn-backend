@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
-const SERVE_STATIC_MODULE = ServeStaticModule.forRootAsync({
+export const SERVE_STATIC_MODULE = ServeStaticModule.forRootAsync({
   inject: [ConfigService],
   useFactory: (configService: ConfigService) => {
     const RESOLVED_PATH = join(__dirname, '..', '..', 'public');
@@ -15,5 +15,3 @@ const SERVE_STATIC_MODULE = ServeStaticModule.forRootAsync({
     ];
   },
 });
-
-export default SERVE_STATIC_MODULE;
