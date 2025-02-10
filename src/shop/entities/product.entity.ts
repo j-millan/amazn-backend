@@ -18,10 +18,10 @@ export class Product extends BaseEntity {
   @Column('varchar', { nullable: true })
   slug: string;
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { length: 200 })
   name: string;
 
-  @Column('varchar', { length: 350 })
+  @Column('varchar', { length: 1000 })
   description: string;
 
   @Column('float')

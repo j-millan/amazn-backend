@@ -111,7 +111,7 @@ export class ProductsResponseDto extends PaginatedResponseDto {
 export class CreateProductDto {
   @Type(() => String)
   @IsString()
-  @Length(10, 100)
+  @Length(10, 200)
   @ApiProperty({
     name: 'name',
     type: String,
@@ -121,7 +121,7 @@ export class CreateProductDto {
 
   @Type(() => String)
   @IsString()
-  @Length(50, 350)
+  @Length(50, 1000)
   @ApiProperty({
     name: 'description',
     type: String,
