@@ -79,7 +79,7 @@ export class CategoriesService implements CategoriesServiceInterface {
   }
 
   async init(categories: any[]): Promise<void> {
-    await this._categoriesRepo.query('DELETE FROM category');
+    await this._categoriesRepo.clear();
     await this._categoriesRepo.query(
       'ALTER SEQUENCE category_id_seq RESTART WITH 1',
     );

@@ -12,6 +12,7 @@ import {
   ProductsResponseDto,
 } from '../../dto';
 import { Category, Product } from '../../entities';
+import { PRODUCTS } from 'src/shop/data/products';
 
 @Injectable()
 export class ProductsService implements ProductsServiceInterface {
@@ -79,6 +80,18 @@ export class ProductsService implements ProductsServiceInterface {
 
   async delete(id: number): Promise<void> {
     await this._productsRepo.delete(id);
+  }
+
+  async init(): Promise<void> {
+    this._productsRepo.clear();
+    await this._productsRepo.query(
+      'ALTER SEQUENCE product_id_seq RESTART WITH 1',
+    );
+
+    for (const product of PRODUCTS) {
+      console.debug('product:', product);
+      await this.create(product);
+    }
   }
 
   private _setSlug(product: Product): void {
