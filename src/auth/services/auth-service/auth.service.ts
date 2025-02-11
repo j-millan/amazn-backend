@@ -3,10 +3,10 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { throwHttpException } from 'src/core';
-import { UsersInjectionEnum } from 'src/users/enums';
-import { SignInDto, SignInResponseDto, SignUpDto } from 'src/auth/dto';
 import { UsersServiceInterface } from 'src/users/users.service.interface';
+import { UsersInjectionEnum } from 'src/users/enums';
 import { AuthServiceInterface } from './auth.service.interface';
+import { SignInDto, SignInResponseDto, SignUpDto } from 'src/auth/dto';
 
 @Injectable()
 export class AuthService implements AuthServiceInterface {

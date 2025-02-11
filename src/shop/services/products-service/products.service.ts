@@ -5,7 +5,7 @@ import slugify from 'slugify';
 
 import { throwHttpException } from 'src/core';
 import { BaseShopService } from '../base-shop.service';
-import { ProductsServiceInterface } from '..';
+import { ProductsServiceInterface } from './products-service.interface';
 import {
   CreateProductDto,
   ProductParamsDto,

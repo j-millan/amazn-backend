@@ -20,6 +20,8 @@ import {
 } from '@nestjs/swagger';
 
 import { HttpErrorDto, MessageResponseDto, throwHttpException } from 'src/core';
+import { UsersServiceInterface } from 'src/users/users.service.interface';
+import { AuthServiceInterface, OTPServiceInterface } from './services';
 import { AuthInjectionEnum } from './enums';
 import {
   CheckEmailDto,
@@ -28,11 +30,8 @@ import {
   SignUpDto,
   UserResponseDto,
 } from 'src/auth/dto';
-import { OTPServiceInterface } from './services/otp-service/otp.service.interface';
-import { AuthServiceInterface } from './services/auth-service/auth.service.interface';
 import { GenerateOTPDto, VerifyOTPDto } from './dto/otp.dto';
 import { UsersInjectionEnum } from 'src/users/enums';
-import { UsersServiceInterface } from 'src/users/users.service.interface';
 
 @Controller('auth')
 @ApiTags('auth')

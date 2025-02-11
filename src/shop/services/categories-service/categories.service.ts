@@ -1,13 +1,13 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 import { Equal, IsNull, Repository } from 'typeorm';
 import slugify from 'slugify';
 
 import { throwHttpException } from 'src/core';
+import { CategoriesServiceInterface } from './categories-service.interface';
 import { Category } from '../../entities';
-import { CategoriesServiceInterface } from '..';
 import { CategoryResponseDto, CreateCategoryDto } from '../../dto';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CategoriesService implements CategoriesServiceInterface {
