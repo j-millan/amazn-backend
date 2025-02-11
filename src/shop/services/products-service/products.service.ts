@@ -4,6 +4,7 @@ import { FindOptionsWhere, MoreThanOrEqual, Repository } from 'typeorm';
 import slugify from 'slugify';
 
 import { throwHttpException } from 'src/core';
+import { BaseShopService } from '../base-shop.service';
 import { ProductsServiceInterface } from '..';
 import {
   CreateProductDto,
@@ -15,11 +16,16 @@ import { Category, Product } from '../../entities';
 import { PRODUCTS } from 'src/shop/data/products';
 
 @Injectable()
-export class ProductsService implements ProductsServiceInterface {
+export class ProductsService
+  extends BaseShopService
+  implements ProductsServiceInterface
+{
   constructor(
     @InjectRepository(Product) private _productsRepo: Repository<Product>,
     @InjectRepository(Category) private _categoriesRepo: Repository<Category>,
-  ) {}
+  ) {
+    super();
+  }
 
   async getAll(params: ProductParamsDto): Promise<ProductsResponseDto> {
     const STOCK = params?.stock === true ? 1 : 0;
@@ -33,8 +39,7 @@ export class ProductsService implements ProductsServiceInterface {
       await this._productsRepo.find({
         where: WHERE,
         relations: ['category.parent'],
-        take: params.pageSize,
-        skip: params.pageNumber,
+        ...this.getPaginationParams(params),
       })
     ).map((product) => new ProductResponseDto(product));
 

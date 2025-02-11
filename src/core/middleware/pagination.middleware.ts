@@ -5,13 +5,13 @@ import { NextFunction, Request } from 'express';
 export class PaginationMiddleware implements NestMiddleware {
   use(req: Request, _res: Response, next: NextFunction) {
     const QUERY = req.query;
-    const PAGE_SIZE = QUERY['pageSize'] ? +QUERY['pageSize'] : 25;
-    const PAGE_NUMBER = QUERY['pageNumber'] ? +QUERY['pageNumber'] : 1;
+    const PAGE_SIZE = QUERY['pageSize'] ? QUERY['pageSize'] : '25';
+    const PAGE_NUMBER = QUERY['pageNumber'] ? QUERY['pageNumber'] : '1';
 
     req.query = {
       ...QUERY,
-      pageSize: PAGE_SIZE.toString(),
-      pageNumber: ((PAGE_NUMBER - 1) * PAGE_SIZE).toString(),
+      pageSize: PAGE_SIZE,
+      pageNumber: PAGE_NUMBER,
     };
 
     next();

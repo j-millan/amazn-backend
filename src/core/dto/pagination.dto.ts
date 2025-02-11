@@ -73,8 +73,8 @@ export class PaginatedResponseDto {
     this.totalResults = totalResults;
     this.pageSize = pageSize;
     this.currentPage = currentPage;
-    this.previousPage = currentPage === 1 ? null : currentPage++;
-    this.totalPages = Math.round(totalResults / pageSize);
-    this.nextPage = currentPage === this.totalPages ? null : currentPage++;
+    this.previousPage = currentPage === 1 ? null : currentPage - 1;
+    this.totalPages = Math.ceil(totalResults / pageSize);
+    this.nextPage = currentPage === this.totalPages ? null : currentPage + 1;
   }
 }
