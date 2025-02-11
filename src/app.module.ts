@@ -1,9 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 
@@ -13,7 +8,6 @@ import { ShopModule } from './shop/shop.module';
 import {
   ADMINJS_CONFIG,
   MAILER_CONFIG,
-  PaginationMiddleware,
   SERVE_STATIC_MODULE,
   TYPE_ORM_CONFIG,
 } from './core';
@@ -38,10 +32,4 @@ const CONFIG_MODULE = ConfigModule.forRoot({
   controllers: [],
   providers: [],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(PaginationMiddleware)
-      .forRoutes({ path: 'products', method: RequestMethod.GET });
-  }
-}
+export class AppModule {}

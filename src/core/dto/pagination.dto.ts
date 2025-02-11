@@ -11,8 +11,9 @@ export class PaginationParamsDto {
     description: 'The number of results per page.',
     type: Number,
     required: false,
+    default: 25,
   })
-  pageSize?: number;
+  pageSize?: number = 25;
 
   @Type(() => Number)
   @IsNumber()
@@ -22,8 +23,9 @@ export class PaginationParamsDto {
     description: 'The page number.',
     type: Number,
     required: false,
+    default: 1,
   })
-  pageNumber?: number;
+  pageNumber?: number = 1;
 }
 
 export class PaginatedResponseDto {

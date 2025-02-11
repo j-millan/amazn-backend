@@ -6,7 +6,6 @@ export * from './config/mailer';
 export * from './config/servestatic';
 
 // Middleware
-export * from './middleware/pagination.middleware';
 
 // DTO
 export * from './dto/http-error.dto';
