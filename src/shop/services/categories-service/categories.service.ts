@@ -1,13 +1,12 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { Equal, IsNull, Repository } from 'typeorm';
-import slugify from 'slugify';
+import { Repository } from 'typeorm';
 
 import { throwHttpException } from 'src/core';
 import { CategoriesServiceInterface } from './categories-service.interface';
 import { Category } from '../../entities';
-import { CategoryResponseDto, CreateCategoryDto } from '../../dto';
+import { CategoryResponseDto } from '../../dto';
 
 @Injectable()
 export class CategoriesService implements CategoriesServiceInterface {
@@ -18,15 +17,8 @@ export class CategoriesService implements CategoriesServiceInterface {
 
   async getAll(): Promise<CategoryResponseDto[]> {
     const CATEGORIES = (
-      await this._categoriesRepo.find({
-        where: {
-          parent: IsNull(),
-        },
-        relations: ['children'],
-      })
-    ).map(
-      (category) => new CategoryResponseDto(category, this._getImageBaseUrl()),
-    );
+      await this._categoriesRepo.manager.getTreeRepository(Category).findTrees()
+    ).map((cat) => new CategoryResponseDto(cat, this._getImageBaseUrl()));
 
     return CATEGORIES;
   }

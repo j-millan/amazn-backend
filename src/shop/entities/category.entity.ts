@@ -2,17 +2,19 @@ import {
   BaseEntity,
   Column,
   Entity,
-  ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
+  Tree,
+  TreeChildren,
+  TreeParent,
 } from 'typeorm';
 
 @Entity()
+@Tree('closure-table')
 export class Category extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column('varchar', { length: 100, unique: true })
+  @Column('varchar', { length: 100 })
   description: string;
 
   @Column('varchar', { nullable: true })
@@ -22,12 +24,10 @@ export class Category extends BaseEntity {
   imageUrl: string;
 
   // Parent category will refer to its children as 'children'
-  @ManyToOne(() => Category, (category) => category.children, {
-    nullable: true,
-  })
+  @TreeParent()
   parent?: Category;
 
   // Child categories will refer to their parent as 'parent'
-  @OneToMany(() => Category, (category) => category.parent, { nullable: true })
+  @TreeChildren({ cascade: true })
   children?: Category[];
 }
