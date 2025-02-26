@@ -20,7 +20,6 @@ import { Response } from 'express';
 import { ShopInjectionEnum } from '../enums';
 import { CategoriesServiceInterface } from '../services';
 import { CategoryResponseDto } from '../dto';
-import { CATEGORIES } from '../data/categories';
 
 @Controller('categories')
 @ApiTags('categories')
@@ -63,10 +62,10 @@ export class CategoriesController {
     return RESULT;
   }
 
-  @Post('init')
+  @Post('seeder')
   @ApiOperation({ summary: 'Initialize categories.' })
   @ApiCreatedResponse({ description: 'Created' })
-  async initCategories(): Promise<void> {
-    return await this._categoriesService.init(CATEGORIES);
+  async seedCategories(): Promise<void> {
+    return await this._categoriesService.seeder();
   }
 }

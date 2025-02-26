@@ -7,6 +7,7 @@ import { throwHttpException } from 'src/core';
 import { CategoriesServiceInterface } from './categories-service.interface';
 import { Category } from '../../entities';
 import { CategoryResponseDto } from '../../dto';
+import { CATEGORIES } from 'src/shop/data/categories';
 
 @Injectable()
 export class CategoriesService implements CategoriesServiceInterface {
@@ -40,57 +41,13 @@ export class CategoriesService implements CategoriesServiceInterface {
     }
   }
 
-  async create({
-    description,
-    imageUrl,
-    parentId,
-  }: CreateCategoryDto): Promise<CategoryResponseDto> {
-    const PARENT = await this._categoriesRepo.findOne({
-      where: { id: Equal(parentId) },
-    });
-
-    if (parentId && !PARENT) {
-      throwHttpException(
-        HttpStatus.BAD_REQUEST,
-        `the category with id ${parentId} does not exist`,
-      );
-    }
-
-    const SLUG = slugify(description, { lower: true });
-
-    const CATEGORY = await this._categoriesRepo.save(
-      this._categoriesRepo.create({
-        description,
-        imageUrl,
-        slug: SLUG,
-        parent: PARENT,
-      }),
-    );
-
-    return CATEGORY;
-  }
-
-  async init(categories: any[]): Promise<void> {
-    await this._categoriesRepo.clear();
+  async seeder(): Promise<void> {
+    await this._categoriesRepo.query('DELETE FROM category');
     await this._categoriesRepo.query(
       'ALTER SEQUENCE category_id_seq RESTART WITH 1',
     );
 
-    this._createCategories(categories);
-  }
-
-  private async _createCategories(
-    categories: any[],
-    parentId?: number,
-  ): Promise<void> {
-    for (let i = 0; i < categories.length; i++) {
-      const { description, imageUrl, subcategories } = categories[i];
-      const { id } = await this.create({ description, imageUrl, parentId });
-
-      if (subcategories?.length) {
-        await this._createCategories(subcategories, id);
-      }
-    }
+    await this._categoriesRepo.save(this._categoriesRepo.create(CATEGORIES));
   }
 
   private _getImageBaseUrl(): string {

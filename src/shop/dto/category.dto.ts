@@ -57,22 +57,14 @@ export class CategoryResponseDto {
   })
   children?: CategoryResponseDto[];
 
-  constructor(
-    category: Category,
-    domain?: string,
-    onlyRelationId: boolean = false,
-  ) {
+  constructor(category: Category, domain?: string) {
     this.id = category.id;
     this.description = category.description;
     this.slug = category.slug;
     this.imageUrl = `${domain}${category.imageUrl}`;
 
     if (category.parent) {
-      if (!onlyRelationId) {
-        this.parent = new CategoryResponseDto(category.parent);
-      } else {
-        this.parentId = category.parent.id;
-      }
+      this.parentId = category.parent.id;
     }
 
     if (category.children?.length) {

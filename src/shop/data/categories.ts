@@ -1,8 +1,10 @@
+import slugify from 'slugify';
+
 export const CATEGORIES = [
   {
     description: 'Tech Essentials',
     imageUrl: 'image/categories/tech-essentials.jpg',
-    subcategories: [
+    children: [
       {
         description: 'Keyboards & Mice',
         imageUrl: 'image/categories/keyboards-mice.jpg',
@@ -24,7 +26,7 @@ export const CATEGORIES = [
   {
     description: 'Interior Design',
     imageUrl: 'image/categories/interior-design.jpg',
-    subcategories: [
+    children: [
       {
         description: 'Decorative Accents',
         imageUrl: 'image/categories/decorative-accents.jpg',
@@ -46,7 +48,7 @@ export const CATEGORIES = [
   {
     description: 'Fashion & Style',
     imageUrl: 'image/categories/fashion-style.jpg',
-    subcategories: [
+    children: [
       {
         description: 'Outerwear & Jackets',
         imageUrl: 'image/categories/outerwear-jackets.jpg',
@@ -68,7 +70,7 @@ export const CATEGORIES = [
   {
     description: 'Creative Supplies',
     imageUrl: 'image/categories/creative-supplies.jpg',
-    subcategories: [
+    children: [
       {
         description: 'Painting & Drawing',
         imageUrl: 'image/categories/painting-drawing.jpg',
@@ -90,7 +92,7 @@ export const CATEGORIES = [
   {
     description: 'Home Appliances',
     imageUrl: 'image/categories/home-appliances.jpg',
-    subcategories: [
+    children: [
       {
         description: 'Kitchen Appliances',
         imageUrl: 'image/categories/kitchen-appliances.jpg',
@@ -112,7 +114,7 @@ export const CATEGORIES = [
   {
     description: 'Books & Media',
     imageUrl: 'image/categories/books-media.jpg',
-    subcategories: [
+    children: [
       {
         description: 'Books',
         imageUrl: 'image/categories/books.jpg',
@@ -134,7 +136,7 @@ export const CATEGORIES = [
   {
     description: 'Health & Beauty',
     imageUrl: 'image/categories/health-beauty.jpg',
-    subcategories: [
+    children: [
       {
         description: 'Skincare',
         imageUrl: 'image/categories/skincare.jpg',
@@ -156,7 +158,7 @@ export const CATEGORIES = [
   {
     description: 'Sports & Outdoors',
     imageUrl: 'image/categories/.jpg',
-    subcategories: [
+    children: [
       {
         description: 'Fitness & Exercise',
         imageUrl: 'image/categories/fitness-excercise.jpg',
@@ -172,3 +174,14 @@ export const CATEGORIES = [
     ],
   },
 ];
+
+function addSlugs(categories: any[]) {
+  categories.forEach((category) => {
+    category.slug = slugify(category.description, { lower: true });
+    if (category.children?.length) {
+      addSlugs(category.children);
+    }
+  });
+}
+
+addSlugs(CATEGORIES);
