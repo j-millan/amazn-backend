@@ -9,26 +9,26 @@ export class HttpErrorDto {
   statusCode: HttpStatus;
 
   @ApiProperty({
-    name: 'error',
+    name: 'message',
     type: String,
   })
-  error: string;
+  message: string;
 
   @ApiProperty({
-    name: 'message',
+    name: 'error',
     type: String,
     isArray: true,
     required: false,
   })
-  message?: string[];
+  error?: string[];
 
   constructor(
     statusCode: HttpStatus,
-    error: string,
-    message?: string | string[],
+    message: string,
+    error?: string | string[],
   ) {
     this.statusCode = statusCode;
-    this.error = error;
-    this.message = message ? [].concat(message) : [];
+    this.message = message;
+    this.error = error ? [].concat(error) : [];
   }
 }
