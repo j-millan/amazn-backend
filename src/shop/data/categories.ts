@@ -8,6 +8,16 @@ export const CATEGORIES = [
       {
         description: 'Keyboards & Mice',
         imageUrl: 'image/categories/keyboards-mice.jpg',
+        children: [
+          {
+            description: 'Mice & Trackpads',
+            imageUrl: 'image/categories/mice-trackpads.jpg',
+          },
+          {
+            description: 'Keyboards & Numpads',
+            imageUrl: 'image/categories/keyboards-numpads.jpg',
+          },
+        ],
       },
       {
         description: 'Gaming Headsets',
@@ -20,6 +30,16 @@ export const CATEGORIES = [
       {
         description: 'VR & Accessories',
         imageUrl: 'image/categories/vr-accessories.jpg',
+        children: [
+          {
+            description: 'Controllers & Motion Sensors',
+            imageUrl: 'image/categories/vr-controllers-motion-sensors.jpg',
+          },
+          {
+            description: 'Cases and Covers',
+            imageUrl: 'image/categories/vt-cases-covers.jpg',
+          },
+        ],
       },
     ],
   },

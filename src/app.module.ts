@@ -5,6 +5,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ShopModule } from './shop/shop.module';
+import { SeederModule } from './seeder/seeder.module';
 import {
   ADMINJS_CONFIG,
   MAILER_CONFIG,
@@ -28,6 +29,7 @@ const CONFIG_MODULE = ConfigModule.forRoot({
     ShopModule,
     AuthModule,
     UsersModule,
+    SeederModule,
   ],
   controllers: [],
   providers: [],
