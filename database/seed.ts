@@ -7,7 +7,7 @@ import { ProductSeeder1740979765708 } from './seeds/1740979765708-ProductSeeder'
 (async () => {
   const SEEDS: any[] = [CategorySeeder1740971031301];
 
-  if (process.env.SEED_ENVIRONMENT !== 'prod') {
+  if (process.env.APP_ENV !== 'prod') {
     SEEDS.push(ProductSeeder1740979765708);
   }
 
