@@ -12,8 +12,8 @@ export const TYPE_ORM_CONFIG = TypeOrmModule.forRootAsync({
     password: configService.get('DB_PASSWORD'),
     database: configService.get('DB_DATABASE'),
     entities: [`${__dirname}/../../**/**.entity{.ts,.js}`],
-    // subscribers: [`${__dirname}/../../**/**.subscriber{.ts,.js}`],
-    migrations: [`${__dirname}/../../migrations/**.ts`],
+    // subscribers: [`${__dirname}/../../** /**.subscriber{.ts,.js}`],
+    migrations: [`${__dirname}/../../../database/migrations/**.ts`],
     synchronize: false,
   }),
 });

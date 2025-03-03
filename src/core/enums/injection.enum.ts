@@ -1,7 +1,4 @@
 export enum InjectionEnum {
-  // Seeder services
-  CATEGORIES_SEEDER_SERVICE = 'CategoriesSeederService',
-
   // Users services
   USERS_SERVICE = 'UsersService',
 

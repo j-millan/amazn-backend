@@ -7,7 +7,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { InjectionEnum } from './core';
 
 async function bootstrap(): Promise<void> {
   const APP = await NestFactory.create(AppModule);
@@ -16,8 +15,6 @@ async function bootstrap(): Promise<void> {
 
   APP.enableCors({ origin: 'http://localhost:3000' });
   registerGlobals(APP);
-
-  seed(APP);
 
   const SWAGGER_CONFIG = new DocumentBuilder()
     .setTitle('Amazn API')
@@ -34,11 +31,6 @@ async function registerGlobals(app: INestApplication): Promise<void> {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-}
-
-async function seed(app: INestApplication): Promise<void> {
-  const CATEGORIES_SEEDER = app.get(InjectionEnum.CATEGORIES_SEEDER_SERVICE);
-  await CATEGORIES_SEEDER.run();
 }
 
 bootstrap();
