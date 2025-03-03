@@ -7,7 +7,6 @@ import { throwHttpException } from 'src/core';
 import { CategoriesServiceInterface } from './categories-service.interface';
 import { Category } from '../../entities';
 import { CategoryResponseDto } from '../../dto';
-import { CATEGORIES } from 'src/shop/data/categories';
 
 @Injectable()
 export class CategoriesService implements CategoriesServiceInterface {
@@ -39,15 +38,6 @@ export class CategoriesService implements CategoriesServiceInterface {
         `the category with id ${id} does not exist`,
       );
     }
-  }
-
-  async seeder(): Promise<void> {
-    await this._categoriesRepo.query('DELETE FROM category');
-    await this._categoriesRepo.query(
-      'ALTER SEQUENCE category_id_seq RESTART WITH 1',
-    );
-
-    await this._categoriesRepo.save(this._categoriesRepo.create(CATEGORIES));
   }
 
   private _getImageBaseUrl(): string {
