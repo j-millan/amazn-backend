@@ -1,9 +1,9 @@
 // Config
-export * from './config/typeorm';
-export * from './config/jwt';
-export * from './config/adminjs';
-export * from './config/mailer';
-export * from './config/servestatic';
+export * from './config/typeorm.config';
+export * from './config/jwt.config';
+export * from './config/adminjs.config';
+export * from './config/mailer.config';
+export * from './config/servestatic.config';
 
 // Middleware
 
