@@ -89,12 +89,26 @@ $ npm run test:cov
 
 * Generate migrations based on entities:
   ```bash
-  $ docker exec amazn_api npm run migration:generate
+  $ npm run migration:generate
   ```
 * Apply migrations to the database:
   ```bash
-  $ docker exec amazn_api npm run migration:run
+  $ npm run migration:run
   ```
+
+## Seeding
+
+* Run seeds:
+  ```bash
+  $ npm run seed:run
+  ```
+
+* Create new seed:
+   ```bash
+   $ npm run seed:create -- --name ./database/seeds/{SEEDER_FILE_NAME}.ts
+   ```
+   For consistency, seeder file names should be in `PascalCase`, like migrations. E.g.: `ProductSeed.ts`
+   
 
 ## Resources
 
