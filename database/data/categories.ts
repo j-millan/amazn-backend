@@ -1,5 +1,3 @@
-import slugify from 'slugify';
-
 export const CATEGORIES = [
   {
     description: 'Tech Essentials',
@@ -194,14 +192,3 @@ export const CATEGORIES = [
     ],
   },
 ];
-
-function addSlugs(categories: any[]) {
-  categories.forEach((category) => {
-    category.slug = slugify(category.description, { lower: true });
-    if (category.children?.length) {
-      addSlugs(category.children);
-    }
-  });
-}
-
-addSlugs(CATEGORIES);

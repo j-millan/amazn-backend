@@ -11,8 +11,8 @@ const OPTIONS: DataSourceOptions & SeederOptions = {
   database: process.env.DB_DATABASE,
   entities: [`${__dirname}/../src/**/**.entity{.ts,.js}`],
   migrations: [`${__dirname}/migrations/**.ts`],
-  synchronize: false,
   seeds: [`${__dirname}/seeds/**.ts`],
+  synchronize: false,
 };
 
 export const CONNECTION_SOURCE = new DataSource(OPTIONS);

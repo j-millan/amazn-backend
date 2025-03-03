@@ -84,11 +84,4 @@ export class ProductsController {
   ): Promise<ProductResponseDto> {
     return await this._productsService.create(data);
   }
-
-  @Post('init')
-  @ApiOperation({ summary: 'Initialize products.' })
-  @ApiCreatedResponse({ description: 'Created' })
-  async initCategories(): Promise<void> {
-    return await this._productsService.init();
-  }
 }

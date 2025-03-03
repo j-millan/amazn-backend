@@ -9,5 +9,4 @@ export interface ProductsServiceInterface {
   find(id: number): Promise<ProductResponseDto>;
   create(data: any): Promise<ProductResponseDto>;
   delete(id: number): Promise<void>;
-  init(): Promise<void>;
 }

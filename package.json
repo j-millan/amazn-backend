@@ -19,11 +19,12 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "npx typeorm-ts-node-commonjs",
-    "migration:run": "npm run typeorm -- migration:run -d ./database/data-source.ts",
-    "migration:generate": "npm run typeorm -- migration:generate -d ./database/data-source.ts ./src/migrations/migration",
+    "migration:run:nodocker": "npm run typeorm -- migration:run -d ./database/data-source.ts",
+    "migration:run": "docker exec amazn_api npm run typeorm -- migration:run -d ./database/data-source.ts",
+    "migration:generate": "docker exec amazn_api npm run typeorm -- migration:generate -d ./database/data-source.ts ./src/migrations/migration",
     "migration:create": "npm run typeorm -- migration:create",
-    "migration:revert": "npm run typeorm -- migration:revert -d ./database/data-source.ts",
-    "seed:run": "npx typeorm-extension seed:run -d ./database/data-source.ts",
+    "migration:revert": "docker exec amazn_api npm run typeorm -- migration:revert -d ./database/data-source.ts",
+    "seed:run": "docker exec amazn_api npx ts-node ./database/seed.ts",
     "seed:create": "npx typeorm-extension seed:create"
   },
   "dependencies": {
