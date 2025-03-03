@@ -21,7 +21,7 @@
     "typeorm": "npx typeorm-ts-node-commonjs",
     "migration:run:nodocker": "npm run typeorm -- migration:run -d ./database/data-source.ts",
     "migration:run": "docker exec amazn_api npm run typeorm -- migration:run -d ./database/data-source.ts",
-    "migration:generate": "docker exec amazn_api npm run typeorm -- migration:generate -d ./database/data-source.ts ./src/migrations/migration",
+    "migration:generate": "docker exec amazn_api npm run typeorm -- migration:generate -d ./database/data-source.ts ./database/migrations/migration",
     "migration:create": "npm run typeorm -- migration:create",
     "migration:revert": "docker exec amazn_api npm run typeorm -- migration:revert -d ./database/data-source.ts",
     "seed:run": "docker exec amazn_api npx ts-node ./database/seed.ts",

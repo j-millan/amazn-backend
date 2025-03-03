@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import { DataSourceOptions } from 'typeorm/browser';
 import { SeederOptions } from 'typeorm-extension';
 
-const OPTIONS: DataSourceOptions & SeederOptions = {
+export const CONNECTION_OPTIONS: DataSourceOptions & SeederOptions = {
   type: 'postgres',
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT),
@@ -15,4 +15,4 @@ const OPTIONS: DataSourceOptions & SeederOptions = {
   synchronize: false,
 };
 
-export const CONNECTION_SOURCE = new DataSource(OPTIONS);
+export const DATA_SOURCE = new DataSource(CONNECTION_OPTIONS);
