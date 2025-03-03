@@ -1,6 +1,6 @@
 ## Description
 
-Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
+    Backend service for[Amazn](https://github.com/j-millan/amazn) web app.
 
 ## Project setup
 
@@ -27,6 +27,11 @@ Backend service for [Amazn](https://github.com/j-millan/amazn) web app.
    $ docker compose build
    $ docker compose up
    ```
+6. Run the database seeders:
+
+   ```bash
+   $ npm run seed:run
+   ```
 
 ## Env configuration
 
@@ -34,15 +39,16 @@ The `.env.template` file contains the variables needed to start the app. Copy th
 
 ### App variables
 
-`APP_ENV` specifies in which environment the app is running. Use `dev` for local.
-`APP_PORT` the port where the app will accept connections.
-`APP_DOMAIN` the domain where the app is running. Use `http://localhost` for local.
-`APP_STATIC_PATH` the path where static files will be served. Example: `/static/`.
+- `APP_ENV`: specifies in which environment the app is running.
+  Possible values: `dev`, `qa`, `pre`, `prod`. Use `dev` for local.
+- `APP_PORT`: the port where the app will accept connections.
+- `APP_DOMAIN`: the domain where the app is running. Use `http://localhost` for local.
+- `APP_STATIC_PATH`: the path where static files will be served. Example: `/static/`.
 
 ### JWT variables
 
-`JWT_EXPIRES_IN` the expiration time of the auth tokens, in seconds.
-`JWT_SECRET` the secret used to generate the auth tokens. Generate using the next command:
+- `JWT_EXPIRES_IN`: the expiration time of the auth tokens, in seconds.
+- `JWT_SECRET`: the secret used to generate the auth tokens. Generate using the next command:
 
 ```bash
 $ openssl rand  -hex 32
@@ -50,8 +56,8 @@ $ openssl rand  -hex 32
 
 ### OTP variables
 
-`OTP_EXPIRES_IN` the expiration time of the OTPs, in milliseconds.
-`OTP_SECRET` the secret used to generate the OTPs. Generate using the next command:
+- `OTP_EXPIRES_IN`: the expiration time of the OTPs, in milliseconds.
+- `OTP_SECRET`: the secret used to generate the OTPs. Generate using the next command:
 
 ```bash
 $ openssl rand  -hex 32
@@ -63,13 +69,28 @@ These are the parameters for the email service (used to send OTPs). Sign up for 
 
 ### Database variables
 
-These are the parameters for the postgresql database. If you're setting up the app using Docker, you can fill in the desired values (execpt for `DB_HOST` which has to be `amazn_db`) and the docker compose app will use them to set up the database.
+These are the parameters for the postgresql database. If you're setting up the app using Docker, you can fill in the desired values (execpt for `DB_HOST`, which has to be `amazn_db`) and the docker compose app will use them to set up the database.
 
-## Compile and run the project
+## Docker usage
 
 ```bash
-# development (using docker)
+# Build the docker images (without starting the compose app)
+$ docker compose build
+
+# Build the docker images without cache
+$ docker compose build --no-cache
+
+# Start the compose app
 $ docker compose up
+
+# Rebuild the images and start the compose app
+$ docker compose up --build
+
+# Remove the containers
+$ docker compose down
+
+# Remove the containers and its volumes
+$ docker compose down -v
 ```
 
 ## Run tests
@@ -99,16 +120,17 @@ $ npm run test:cov
 ## Seeding
 
 * Run seeds:
+
   ```bash
   $ npm run seed:run
   ```
-
 * Create new seed:
-   ```bash
-   $ npm run seed:create -- --name ./database/seeds/{SEEDER_FILE_NAME}.ts
-   ```
-   For consistency, seeder file names should be in `PascalCase`, like migrations. E.g.: `ProductSeed.ts`
-   
+
+  ```bash
+  $ npm run seed:create -- --name ./database/seeds/{SEEDER_FILE_NAME}.ts
+  ```
+
+  For consistency, seeder file names should be in `PascalCase`, like migrations. E.g.: `ProductSeed.ts`
 
 ## Resources
 
