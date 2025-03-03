@@ -13,7 +13,6 @@ import {
 } from './core';
 
 const CONFIG_MODULE = ConfigModule.forRoot({
-  envFilePath: '.env',
   isGlobal: true,
 });
 

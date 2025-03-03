@@ -9,6 +9,10 @@ Dockerfile.*
 docker-compose.yml
 README.md
 .eslintrc.js
-.gitignore
-.env.template
 .prettierrc 
+.gitignore
+.env
+.env.dev
+.env.local
+.env.test
+.env.template
