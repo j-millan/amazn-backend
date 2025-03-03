@@ -19,10 +19,14 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
-import { HttpErrorDto, MessageResponseDto, throwHttpException } from 'src/core';
+import {
+  HttpErrorDto,
+  InjectionEnum,
+  MessageResponseDto,
+  throwHttpException,
+} from 'src/core';
 import { UsersServiceInterface } from 'src/users/users.service.interface';
 import { AuthServiceInterface, OTPServiceInterface } from './services';
-import { AuthInjectionEnum } from './enums';
 import {
   CheckEmailDto,
   SignInDto,
@@ -31,17 +35,16 @@ import {
   UserResponseDto,
 } from 'src/auth/dto';
 import { GenerateOTPDto, VerifyOTPDto } from './dto/otp.dto';
-import { UsersInjectionEnum } from 'src/users/enums';
 
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
   constructor(
-    @Inject(AuthInjectionEnum.AUTH_SERVICE)
+    @Inject(InjectionEnum.AUTH_SERVICE)
     private _authService: AuthServiceInterface,
-    @Inject(UsersInjectionEnum.USERS_SERVICE)
+    @Inject(InjectionEnum.USERS_SERVICE)
     private _usersService: UsersServiceInterface,
-    @Inject(AuthInjectionEnum.OTP_SERVICE)
+    @Inject(InjectionEnum.OTP_SERVICE)
     private _otpService: OTPServiceInterface,
   ) {}
 

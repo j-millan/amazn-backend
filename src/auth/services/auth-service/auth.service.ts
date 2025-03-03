@@ -2,16 +2,15 @@ import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { throwHttpException } from 'src/core';
+import { InjectionEnum, throwHttpException } from 'src/core';
 import { UsersServiceInterface } from 'src/users/users.service.interface';
-import { UsersInjectionEnum } from 'src/users/enums';
 import { AuthServiceInterface } from './auth.service.interface';
 import { SignInDto, SignInResponseDto, SignUpDto } from 'src/auth/dto';
 
 @Injectable()
 export class AuthService implements AuthServiceInterface {
   constructor(
-    @Inject(UsersInjectionEnum.USERS_SERVICE)
+    @Inject(InjectionEnum.USERS_SERVICE)
     private _usersService: UsersServiceInterface,
     private _jwtService: JwtService,
   ) {}

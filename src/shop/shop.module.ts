@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { ShopInjectionEnum } from './enums';
+import { InjectionEnum } from 'src/core';
 import { Category, Product } from './entities';
 import { CategoriesService, ProductsService } from './services';
 import { CategoriesController, ProductsController } from './controller';
@@ -11,11 +11,11 @@ import { CategoriesController, ProductsController } from './controller';
   controllers: [ProductsController, CategoriesController],
   providers: [
     {
-      provide: ShopInjectionEnum.PRODUCTS_SERVICE,
+      provide: InjectionEnum.PRODUCTS_SERVICE,
       useClass: ProductsService,
     },
     {
-      provide: ShopInjectionEnum.CATEGORIES_SERVICE,
+      provide: InjectionEnum.CATEGORIES_SERVICE,
       useClass: CategoriesService,
     },
   ],

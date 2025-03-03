@@ -4,11 +4,9 @@ import {
   HttpStatus,
   Inject,
   Param,
-  Post,
   Res,
 } from '@nestjs/common';
 import {
-  ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -17,7 +15,7 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { ShopInjectionEnum } from '../enums';
+import { InjectionEnum } from 'src/core';
 import { CategoriesServiceInterface } from '../services';
 import { CategoryResponseDto } from '../dto';
 
@@ -25,7 +23,7 @@ import { CategoryResponseDto } from '../dto';
 @ApiTags('categories')
 export class CategoriesController {
   constructor(
-    @Inject(ShopInjectionEnum.CATEGORIES_SERVICE)
+    @Inject(InjectionEnum.CATEGORIES_SERVICE)
     private _categoriesService: CategoriesServiceInterface,
   ) {}
 
@@ -60,12 +58,5 @@ export class CategoriesController {
   async getCategory(@Param('id') id: number): Promise<CategoryResponseDto> {
     const RESULT = await this._categoriesService.find(id);
     return RESULT;
-  }
-
-  @Post('seeder')
-  @ApiOperation({ summary: 'Initialize categories.' })
-  @ApiCreatedResponse({ description: 'Created' })
-  async seedCategories(): Promise<void> {
-    return await this._categoriesService.seeder();
   }
 }

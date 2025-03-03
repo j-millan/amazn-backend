@@ -17,3 +17,6 @@ export * from './maps/http-exception.map';
 
 // Utils
 export * from './utils/throw-http-exception';
+
+// Enums
+export * from './enums/injection.enum';

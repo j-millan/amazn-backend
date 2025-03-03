@@ -20,8 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { HttpErrorDto } from 'src/core';
-import { ShopInjectionEnum } from '../enums';
+import { HttpErrorDto, InjectionEnum } from 'src/core';
 import { ProductsServiceInterface } from '../services';
 import {
   CreateProductDto,
@@ -34,7 +33,7 @@ import {
 @ApiTags('products')
 export class ProductsController {
   constructor(
-    @Inject(ShopInjectionEnum.PRODUCTS_SERVICE)
+    @Inject(InjectionEnum.PRODUCTS_SERVICE)
     private _productsService: ProductsServiceInterface,
   ) {}
 
