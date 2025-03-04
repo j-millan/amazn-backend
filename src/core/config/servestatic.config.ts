@@ -5,7 +5,7 @@ import { join } from 'path';
 export const SERVE_STATIC_MODULE = ServeStaticModule.forRootAsync({
   inject: [ConfigService],
   useFactory: (configService: ConfigService) => {
-    const RESOLVED_PATH = join(__dirname, '..', '..', 'public');
+    const RESOLVED_PATH = join(__dirname, '..', '..', '..', 'public');
 
     return [
       {
